@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { useEventEmitter } from '../hooks/useEventEmitter';
-import { useGetFeaturesQuery } from '../lib/generated/graphql';
+import { useGetTelemetriesQuery } from '../lib/generated/graphql';
 
 const MapSizeUpdater: FC = () => {
     const map = useMap();
@@ -14,7 +14,7 @@ const MapSizeUpdater: FC = () => {
 };
 
 export const MapView: FC = () => {
-    const { error, data, loading } = useGetFeaturesQuery({
+    const { error, data, loading } = useGetTelemetriesQuery({
         pollInterval: 60000,
         ssr: false,
     });
@@ -34,7 +34,7 @@ export const MapView: FC = () => {
                 <MapSizeUpdater />
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 {data &&
-                    data.getFeatures.map((feature) => (
+                    data.getTelemetries.map((feature) => (
                         <Marker
                             key={feature.id}
                             position={[feature.lat, feature.lng]}

@@ -1,12 +1,14 @@
 import { gql } from '@apollo/client';
 
 gql`
-    query GetFeatures {
-        getFeatures {
+    query GetTelemetries {
+        getTelemetries {
             id
             lat
             lng
             level
+            battery
+            updatedAt
         }
     }
 `;

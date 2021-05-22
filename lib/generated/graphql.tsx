@@ -15,27 +15,29 @@ export type Scalars = {
   Float: number;
 };
 
-export type Feature = {
-  __typename?: 'Feature';
+export type Query = {
+  __typename?: 'Query';
+  getTelemetries?: Maybe<Array<Maybe<Telemetry>>>;
+};
+
+export type Telemetry = {
+  __typename?: 'Telemetry';
   id: Scalars['ID'];
   lat: Scalars['Float'];
   lng: Scalars['Float'];
-  level?: Maybe<Scalars['Float']>;
+  level: Scalars['Float'];
+  battery: Scalars['Float'];
+  updatedAt: Scalars['String'];
 };
 
-export type Query = {
-  __typename?: 'Query';
-  getFeatures?: Maybe<Array<Maybe<Feature>>>;
-};
-
-export type GetFeaturesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetTelemetriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetFeaturesQuery = (
+export type GetTelemetriesQuery = (
   { __typename?: 'Query' }
-  & { getFeatures?: Maybe<Array<Maybe<(
-    { __typename?: 'Feature' }
-    & Pick<Feature, 'id' | 'lat' | 'lng' | 'level'>
+  & { getTelemetries?: Maybe<Array<Maybe<(
+    { __typename?: 'Telemetry' }
+    & Pick<Telemetry, 'id' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
   )>>> }
 );
 
@@ -117,39 +119,41 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Feature: ResolverTypeWrapper<Feature>;
+  Query: ResolverTypeWrapper<{}>;
+  Telemetry: ResolverTypeWrapper<Telemetry>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
-  Query: ResolverTypeWrapper<{}>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Feature: Feature;
+  Query: {};
+  Telemetry: Telemetry;
   ID: Scalars['ID'];
   Float: Scalars['Float'];
-  Query: {};
-  Boolean: Scalars['Boolean'];
   String: Scalars['String'];
-};
-
-export type FeatureResolvers<ContextType = any, ParentType extends ResolversParentTypes['Feature'] = ResolversParentTypes['Feature']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  lng?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  level?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  Boolean: Scalars['Boolean'];
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  getFeatures?: Resolver<Maybe<Array<Maybe<ResolversTypes['Feature']>>>, ParentType, ContextType>;
+  getTelemetries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Telemetry']>>>, ParentType, ContextType>;
+};
+
+export type TelemetryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Telemetry'] = ResolversParentTypes['Telemetry']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  lng?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  level?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  battery?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
-  Feature?: FeatureResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Telemetry?: TelemetryResolvers<ContextType>;
 };
 
 
@@ -160,40 +164,42 @@ export type Resolvers<ContextType = any> = {
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
 
-export const GetFeaturesDocument = gql`
-    query GetFeatures {
-  getFeatures {
+export const GetTelemetriesDocument = gql`
+    query GetTelemetries {
+  getTelemetries {
     id
     lat
     lng
     level
+    battery
+    updatedAt
   }
 }
     `;
 
 /**
- * __useGetFeaturesQuery__
+ * __useGetTelemetriesQuery__
  *
- * To run a query within a React component, call `useGetFeaturesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetFeaturesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTelemetriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTelemetriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetFeaturesQuery({
+ * const { data, loading, error } = useGetTelemetriesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetFeaturesQuery(baseOptions?: Apollo.QueryHookOptions<GetFeaturesQuery, GetFeaturesQueryVariables>) {
+export function useGetTelemetriesQuery(baseOptions?: Apollo.QueryHookOptions<GetTelemetriesQuery, GetTelemetriesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetFeaturesQuery, GetFeaturesQueryVariables>(GetFeaturesDocument, options);
+        return Apollo.useQuery<GetTelemetriesQuery, GetTelemetriesQueryVariables>(GetTelemetriesDocument, options);
       }
-export function useGetFeaturesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFeaturesQuery, GetFeaturesQueryVariables>) {
+export function useGetTelemetriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTelemetriesQuery, GetTelemetriesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetFeaturesQuery, GetFeaturesQueryVariables>(GetFeaturesDocument, options);
+          return Apollo.useLazyQuery<GetTelemetriesQuery, GetTelemetriesQueryVariables>(GetTelemetriesDocument, options);
         }
-export type GetFeaturesQueryHookResult = ReturnType<typeof useGetFeaturesQuery>;
-export type GetFeaturesLazyQueryHookResult = ReturnType<typeof useGetFeaturesLazyQuery>;
-export type GetFeaturesQueryResult = Apollo.QueryResult<GetFeaturesQuery, GetFeaturesQueryVariables>;
+export type GetTelemetriesQueryHookResult = ReturnType<typeof useGetTelemetriesQuery>;
+export type GetTelemetriesLazyQueryHookResult = ReturnType<typeof useGetTelemetriesLazyQuery>;
+export type GetTelemetriesQueryResult = Apollo.QueryResult<GetTelemetriesQuery, GetTelemetriesQueryVariables>;
