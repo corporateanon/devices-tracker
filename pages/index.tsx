@@ -9,7 +9,7 @@ const client = new ApolloClient({
 });
 
 const DynamicDashboard = dynamic(
-    () => import('../lib/Dashboard').then((m) => m.Dashboard),
+    () => import('../components/Dashboard').then((m) => m.Dashboard),
     { ssr: false }
 );
 

@@ -2292,6 +2292,11 @@ clone-response@^1.0.2:
   dependencies:
     mimic-response "^1.0.0"
 
+clsx@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
+  integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
+
 code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
@@ -4985,6 +4990,13 @@ rc@^1.2.8:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-data-grid@^7.0.0-canary.48:
+  version "7.0.0-canary.48"
+  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-7.0.0-canary.48.tgz#cc6cfbca08a352c22258d8084d6896808531a113"
+  integrity sha512-ey5ZYC9UovotjI7zHbKxhK22JT8oIb4ksv+0n1bdhTH9ztkJvDiAb+/r1XmmcFmhwf3SonSplayolKVtbNiq7w==
+  dependencies:
+    clsx "^1.1.1"
 
 react-dom@17.0.2:
   version "17.0.2"

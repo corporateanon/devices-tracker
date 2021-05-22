@@ -1,8 +1,8 @@
 import { FC, useCallback, useEffect } from 'react';
 import SplitterLayout from 'react-splitter-layout';
 import 'react-splitter-layout/lib/index.css';
-import { MapView } from './MapView';
-import { EventEmitterContext } from './useEventEmitter';
+import { MapView } from '../lib/MapView';
+import { EventEmitterContext } from '../hooks/useEventEmitter';
 import { EventEmitter } from 'events';
 
 export const Dashboard: FC = () => {
