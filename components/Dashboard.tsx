@@ -1,9 +1,9 @@
+import { EventEmitter } from 'events';
 import { FC, useCallback, useEffect } from 'react';
 import SplitterLayout from 'react-splitter-layout';
 import 'react-splitter-layout/lib/index.css';
-import { MapView } from '../lib/MapView';
 import { EventEmitterContext } from '../hooks/useEventEmitter';
-import { EventEmitter } from 'events';
+import { MapView } from './MapView';
 
 export const Dashboard: FC = () => {
     const ee = new EventEmitter();

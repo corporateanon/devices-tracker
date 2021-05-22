@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
-import { useGetFeaturesQuery } from './generated/graphql';
-import { useEventEmitter } from './useEventEmitter';
+import { useEventEmitter } from '../hooks/useEventEmitter';
+import { useGetFeaturesQuery } from '../lib/generated/graphql';
 
 const MapSizeUpdater: FC = () => {
     const map = useMap();
