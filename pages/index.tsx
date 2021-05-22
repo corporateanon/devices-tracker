@@ -17,14 +17,7 @@ const HomePage: NextPage = () => {
     return (
         <>
             <ApolloProvider client={client}>
-                <div
-                    style={{
-                        width: '90vw',
-                        height: '90vh',
-                    }}
-                >
-                    <DynamicDashboard />
-                </div>
+                <DynamicDashboard />
             </ApolloProvider>
         </>
     );
