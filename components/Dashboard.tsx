@@ -1,3 +1,4 @@
+import { Grid } from '@material-ui/core';
 import { EventEmitter } from 'events';
 import { FC, useCallback, useEffect } from 'react';
 import SplitterLayout from 'react-splitter-layout';
@@ -5,6 +6,8 @@ import 'react-splitter-layout/lib/index.css';
 import { EventEmitterContext } from '../hooks/useEventEmitter';
 import { ListView } from './ListView';
 import { MapView } from './MapView';
+import { NavigationPane } from './NavigationPane';
+import classes from './Dashboard.module.css';
 
 export const Dashboard: FC = () => {
     const events = new EventEmitter();
@@ -15,11 +18,18 @@ export const Dashboard: FC = () => {
     }, []);
 
     return (
-        <SplitterLayout onDragEnd={handleResize}>
-            <ListView />
-            <EventEmitterContext.Provider value={events}>
-                <MapView />
-            </EventEmitterContext.Provider>
-        </SplitterLayout>
+        <Grid container className={classes.root}>
+            <Grid item>
+                <NavigationPane />
+            </Grid>
+            <Grid item>
+                <SplitterLayout onDragEnd={handleResize}>
+                    <ListView />
+                    <EventEmitterContext.Provider value={events}>
+                        <MapView />
+                    </EventEmitterContext.Provider>
+                </SplitterLayout>
+            </Grid>
+        </Grid>
     );
 };

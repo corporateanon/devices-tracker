@@ -1,12 +1,24 @@
+import moment from 'moment';
 import React, { useMemo } from 'react';
-import ReactDataGrid from 'react-data-grid';
-import { useGetTelemetriesQuery } from '../lib/generated/graphql';
+import ReactDataGrid, { Column } from 'react-data-grid';
+import { Telemetry, useGetTelemetriesQuery } from '../lib/generated/graphql';
+import 'moment/locale/ru';
 
-const columns = [
+const columns: readonly Column<Telemetry>[] = [
     { key: 'id', name: 'ID' },
-    { key: 'level', name: 'Level' },
-    { key: 'battery', name: 'Battery' },
-    { key: 'updatedAt', name: 'Updated' },
+    { key: 'level', name: 'Уровень, %' },
+    { key: 'battery', name: 'Аккумулятор, %' },
+    {
+        key: 'updatedAt',
+        name: 'Онлайн',
+        formatter({ row: { updatedAt } }) {
+            return (
+                <div title={moment(updatedAt).format('DD MMM YYYY HH:mm:ss')}>
+                    {moment(updatedAt).fromNow()}
+                </div>
+            );
+        },
+    },
 ];
 
 export function ListView() {

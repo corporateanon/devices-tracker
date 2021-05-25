@@ -1,0 +1,8 @@
+.root :global(.layout-pane-primary) {
+    display: flex;
+    flex-direction: column;
+}
+
+.root :global(.layout-pane-primary) [role='grid'] {
+    flex: 1;
+}
