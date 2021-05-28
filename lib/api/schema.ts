@@ -12,7 +12,23 @@ export const typeDefs = gql`
         updatedAt: String!
     }
 
+    enum YesNo {
+        YES
+        NO
+    }
+
+    enum HighLow {
+        LOW
+        HIGH
+    }
+
+    input TelemetryFilter {
+        level: HighLow
+        battery: HighLow
+        online: YesNo
+    }
+
     type Query {
-        getTelemetries: [Telemetry]
+        getTelemetries(filter: TelemetryFilter!): [Telemetry]
     }
 `;

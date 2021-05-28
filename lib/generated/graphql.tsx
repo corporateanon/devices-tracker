@@ -5,6 +5,7 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -15,9 +16,19 @@ export type Scalars = {
   Float: number;
 };
 
+export enum HighLow {
+  Low = 'LOW',
+  High = 'HIGH'
+}
+
 export type Query = {
   __typename?: 'Query';
   getTelemetries?: Maybe<Array<Maybe<Telemetry>>>;
+};
+
+
+export type QueryGetTelemetriesArgs = {
+  filter: TelemetryFilter;
 };
 
 export type Telemetry = {
@@ -30,7 +41,20 @@ export type Telemetry = {
   updatedAt: Scalars['String'];
 };
 
-export type GetTelemetriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type TelemetryFilter = {
+  level?: Maybe<HighLow>;
+  battery?: Maybe<HighLow>;
+  online?: Maybe<YesNo>;
+};
+
+export enum YesNo {
+  Yes = 'YES',
+  No = 'NO'
+}
+
+export type GetTelemetriesQueryVariables = Exact<{
+  filter: TelemetryFilter;
+}>;
 
 
 export type GetTelemetriesQuery = (
@@ -119,11 +143,14 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  HighLow: HighLow;
   Query: ResolverTypeWrapper<{}>;
   Telemetry: ResolverTypeWrapper<Telemetry>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  TelemetryFilter: TelemetryFilter;
+  YesNo: YesNo;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
@@ -134,11 +161,12 @@ export type ResolversParentTypes = {
   ID: Scalars['ID'];
   Float: Scalars['Float'];
   String: Scalars['String'];
+  TelemetryFilter: TelemetryFilter;
   Boolean: Scalars['Boolean'];
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  getTelemetries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Telemetry']>>>, ParentType, ContextType>;
+  getTelemetries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Telemetry']>>>, ParentType, ContextType, RequireFields<QueryGetTelemetriesArgs, 'filter'>>;
 };
 
 export type TelemetryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Telemetry'] = ResolversParentTypes['Telemetry']> = {
@@ -165,8 +193,8 @@ export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
 
 export const GetTelemetriesDocument = gql`
-    query GetTelemetries {
-  getTelemetries {
+    query GetTelemetries($filter: TelemetryFilter!) {
+  getTelemetries(filter: $filter) {
     id
     lat
     lng
@@ -189,10 +217,11 @@ export const GetTelemetriesDocument = gql`
  * @example
  * const { data, loading, error } = useGetTelemetriesQuery({
  *   variables: {
+ *      filter: // value for 'filter'
  *   },
  * });
  */
-export function useGetTelemetriesQuery(baseOptions?: Apollo.QueryHookOptions<GetTelemetriesQuery, GetTelemetriesQueryVariables>) {
+export function useGetTelemetriesQuery(baseOptions: Apollo.QueryHookOptions<GetTelemetriesQuery, GetTelemetriesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetTelemetriesQuery, GetTelemetriesQueryVariables>(GetTelemetriesDocument, options);
       }

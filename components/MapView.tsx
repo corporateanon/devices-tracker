@@ -1,7 +1,9 @@
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { useEventEmitter } from '../hooks/useEventEmitter';
 import { useGetTelemetriesQuery } from '../lib/generated/graphql';
+import { queryToFilters } from './filters/filters';
 
 const MapSizeUpdater: FC = () => {
     const map = useMap();
@@ -14,9 +16,13 @@ const MapSizeUpdater: FC = () => {
 };
 
 export const MapView: FC = () => {
+    const { query } = useRouter();
     const { error, data, loading } = useGetTelemetriesQuery({
         pollInterval: 60000,
         ssr: false,
+        variables: {
+            filter: queryToFilters(query),
+        },
     });
 
     return (

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 gql`
-    query GetTelemetries {
-        getTelemetries {
+    query GetTelemetries($filter: TelemetryFilter!) {
+        getTelemetries(filter: $filter) {
             id
             lat
             lng

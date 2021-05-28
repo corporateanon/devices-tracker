@@ -3,6 +3,8 @@ import React, { useMemo } from 'react';
 import ReactDataGrid, { Column } from 'react-data-grid';
 import { Telemetry, useGetTelemetriesQuery } from '../lib/generated/graphql';
 import 'moment/locale/ru';
+import { queryToFilters } from './filters/filters';
+import { useRouter } from 'next/router';
 
 const columns: readonly Column<Telemetry>[] = [
     { key: 'id', name: 'ID' },
@@ -22,9 +24,13 @@ const columns: readonly Column<Telemetry>[] = [
 ];
 
 export function ListView() {
+    const { query } = useRouter();
     const { error, data, loading } = useGetTelemetriesQuery({
         pollInterval: 60000,
         ssr: false,
+        variables: {
+            filter: queryToFilters(query),
+        },
     });
 
     const rows = useMemo(() => {
