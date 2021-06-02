@@ -4,6 +4,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { useEventEmitter } from '../hooks/useEventEmitter';
 import { useGetTelemetriesQuery } from '../lib/generated/graphql';
 import { queryToFilters } from './filters/filters';
+import { LeafletBarrelMarker } from './LeafletBarrelMarker';
 
 const MapSizeUpdater: FC = () => {
     const map = useMap();
@@ -40,18 +41,8 @@ export const MapView: FC = () => {
                 <MapSizeUpdater />
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 {data &&
-                    data.getTelemetries.map((feature) => (
-                        <Marker
-                            key={feature.id}
-                            position={[feature.lat, feature.lng]}
-                        >
-                            <Popup>
-                                <p>
-                                    <b>Наполнение:</b>{' '}
-                                    <span>{feature.level}</span>
-                                </p>
-                            </Popup>
-                        </Marker>
+                    data.getTelemetries.map((telemetry) => (
+                        <LeafletBarrelMarker telemetry={telemetry} />
                     ))}
             </MapContainer>
         </>

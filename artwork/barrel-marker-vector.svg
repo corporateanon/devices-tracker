@@ -25,11 +25,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6"
-     inkscape:cx="66.362566"
-     inkscape:cy="7.4304059"
+     inkscape:zoom="22.4"
+     inkscape:cx="37.215261"
+     inkscape:cy="48.555431"
      inkscape:document-units="mm"
-     inkscape:current-layer="g39"
+     inkscape:current-layer="g27"
      showgrid="true"
      units="px"
      inkscape:window-width="1920"
@@ -64,8 +64,7 @@
      inkscape:groupmode="layer"
      class="barrel"
      id="g24"
-     transform="translate(-26.326041,-69.991026)"
-     sodipodi:insensitive="true">
+     transform="translate(-26.326041,-69.991026)">
     <path
        style="color:#000000;clip-rule:nonzero;overflow:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        d="m 120,277.51953 v 5 h -15 c -2.76998,0 -5,2.23002 -5,5 v 40 c 0,2.76998 2.23002,5 5,5 h 40 c 2.76998,0 5,-2.23002 5,-5 v -40 c 0,-2.76998 -2.23002,-5 -5,-5 h -15 v -5 z m -10,10 h 30 c 2.76999,0 5,2.23002 5,5 v 30 c 0,2.76998 -2.23001,5 -5,5 h -30 c -2.76999,0 -5,-2.23002 -5,-5 v -30 c 0,-2.76998 2.23001,-5 5,-5 z"
@@ -127,14 +126,14 @@
      class="bat"
      inkscape:label="battery"
      id="g27"
-     transform="translate(-26.326041,-69.991026)"
-     sodipodi:insensitive="true">
+     transform="translate(-26.326041,-69.991026)">
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;overflow:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.25226918;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       d="m 34.998139,70.516143 a 0.1202761,0.13230489 0 0 0 -0.120733,0.132807 v 0.796851 h -0.360324 a 0.1202761,0.13230489 0 0 0 -0.120732,0.130741 v 0.795301 a 0.1202761,0.13230489 0 0 0 0.120732,0.132807 h 0.360324 v 0.79065 a 0.1202761,0.13230489 0 0 0 0,0.01189 0.1202761,0.13230489 0 0 0 0.120733,0.119372 h 4.810094 a 0.1202761,0.13230489 0 0 0 0.120733,-0.131259 v -2.64635 a 0.1202761,0.13230489 0 0 0 -0.120733,-0.132807 z m 0.118854,0.265615 H 39.6875 v 2.380734 h -4.570507 v -0.782381 a 0.1202761,0.13230489 0 0 0 0,-0.0083 V 71.57651 a 0.1202761,0.13230489 0 0 0 0,-0.01137 z m -0.481056,0.927592 h 0.241469 v 0.529685 h -0.241469 z"
+       d="m 34.998139,70.516143 c -0.06678,-2.8e-4 -0.120987,0.05934 -0.120733,0.132807 v 0.796851 h -0.360324 c -0.06605,-2.8e-4 -0.119952,0.05809 -0.120732,0.130741 v 0.795301 c -2.54e-4,0.07346 0.05395,0.133086 0.120732,0.132807 h 0.360324 v 0.79065 c -1.62e-4,0.004 -1.62e-4,0.0079 0,0.01189 0.0061,0.06817 0.05846,0.11996 0.120733,0.119372 h 4.810094 c 0.06623,2.79e-4 0.12021,-0.0584 0.120733,-0.131259 v -2.64635 c 2.54e-4,-0.07346 -0.05395,-0.133087 -0.120733,-0.132807 z m -0.362202,1.193207 h 0.241469 v 0.529685 h -0.241469 z"
        id="bat_border"
        inkscape:connector-curvature="0"
-       class="bat_border" />
+       class="bat_border"
+       sodipodi:nodetypes="ccccccccccccccccccccc" />
   </g>
   <g
      inkscape:groupmode="layer"
