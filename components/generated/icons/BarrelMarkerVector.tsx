@@ -122,35 +122,38 @@ function SvgBarrelMarkerVector(props: React.SVGProps<SVGSVGElement>) {
           overflow="visible"
         />
       </g>
-      <path
-        style={{
-          lineHeight: "normal",
-          fontVariantLigatures: "normal",
-          fontVariantPosition: "normal",
-          fontVariantCaps: "normal",
-          fontVariantNumeric: "normal",
-          fontVariantAlternates: "normal",
-          fontFeatureSettings: "normal",
-          textIndent: 0,
-          textAlign: "start",
-          textDecorationLine: "none",
-          textDecorationStyle: "solid",
-          textDecorationColor: "#000",
-          textTransform: "none",
-          textOrientation: "mixed",
-          whiteSpace: "normal",
-          shapePadding: 0,
-          isolation: "auto",
-          mixBlendMode: "normal",
-          solidColor: "#000",
-          solidOpacity: 1,
-        }}
-        d="M8.672.525a.12.132 0 00-.12.133v.797H8.19a.12.132 0 00-.12.13v.796a.12.132 0 00.12.133h.36v.79a.12.132 0 000 .012.12.132 0 00.121.12h4.81a.12.132 0 00.12-.132V.658a.12.132 0 00-.12-.133zm.119.266h4.57v2.38h-4.57V2.39a.12.132 0 000-.008v-.796a.12.132 0 000-.01zm-.481.927h.241v.53H8.31z"
-        color="#000"
-        fontWeight={400}
-        fontFamily="sans-serif"
-        overflow="visible"
-      />
+      <g className="barrel-marker-vector_svg__bat">
+        <path
+          style={{
+            lineHeight: "normal",
+            fontVariantLigatures: "normal",
+            fontVariantPosition: "normal",
+            fontVariantCaps: "normal",
+            fontVariantNumeric: "normal",
+            fontVariantAlternates: "normal",
+            fontFeatureSettings: "normal",
+            textIndent: 0,
+            textAlign: "start",
+            textDecorationLine: "none",
+            textDecorationStyle: "solid",
+            textDecorationColor: "#000",
+            textTransform: "none",
+            textOrientation: "mixed",
+            whiteSpace: "normal",
+            shapePadding: 0,
+            isolation: "auto",
+            mixBlendMode: "normal",
+            solidColor: "#000",
+            solidOpacity: 1,
+          }}
+          d="M8.672.525a.12.132 0 00-.12.133v.797H8.19a.12.132 0 00-.12.13v.796a.12.132 0 00.12.133h.36v.79a.12.132 0 000 .012.12.132 0 00.121.12h4.81a.12.132 0 00.12-.132V.658a.12.132 0 00-.12-.133zm.119.266h4.57v2.38h-4.57V2.39a.12.132 0 000-.008v-.796a.12.132 0 000-.01zm-.481.927h.241v.53H8.31z"
+          className="barrel-marker-vector_svg__bat_border"
+          color="#000"
+          fontWeight={400}
+          fontFamily="sans-serif"
+          overflow="visible"
+        />
+      </g>
       <g className="barrel-marker-vector_svg__net">
         <path
           style={{
@@ -175,16 +178,13 @@ function SvgBarrelMarkerVector(props: React.SVGProps<SVGSVGElement>) {
             solidColor: "#000",
             solidOpacity: 1,
           }}
-          d="M2.71.955a.215.215 0 00-.21.22v2.15a.215.215 0 10.43 0v-2.15a.215.215 0 00-.22-.22z"
-          className="barrel-marker-vector_svg__net_2"
+          d="M1.445 1.847a.265.265 0 00-.11.502l.85.425-.85.424a.266.266 0 00.24.475l1.203-.602 1.205.602a.265.265 0 00.236-.475l-.85-.424.85-.425a.265.265 0 00-.117-.502.265.265 0 00-.12.03l-1.204.6-1.203-.6a.265.265 0 00-.13-.03z"
+          className="barrel-marker-vector_svg__net_offline"
           color="#000"
           fontWeight={400}
           fontFamily="sans-serif"
           overflow="visible"
-          fill="none"
-          stroke="#000"
-          strokeWidth={0.192}
-          strokeLinecap="round"
+          fillRule="evenodd"
         />
         <path
           style={{
@@ -209,118 +209,12 @@ function SvgBarrelMarkerVector(props: React.SVGProps<SVGSVGElement>) {
             solidColor: "#000",
             solidOpacity: 1,
           }}
-          d="M1.83 1.387a.215.215 0 00-.19.217v1.72a.215.215 0 10.43 0v-1.72a.215.215 0 00-.24-.217z"
-          className="barrel-marker-vector_svg__net_1"
+          d="M2.748.523a.265.265 0 00-.234.267V4.76a.265.265 0 10.53 0V.79a.265.265 0 00-.296-.267z"
           color="#000"
           fontWeight={400}
           fontFamily="sans-serif"
           overflow="visible"
-          fill="none"
-          stroke="#000"
-          strokeWidth={0.192}
-          strokeLinecap="round"
-        />
-        <path
-          style={{
-            lineHeight: "normal",
-            fontVariantLigatures: "normal",
-            fontVariantPosition: "normal",
-            fontVariantCaps: "normal",
-            fontVariantNumeric: "normal",
-            fontVariantAlternates: "normal",
-            fontFeatureSettings: "normal",
-            textIndent: 0,
-            textAlign: "start",
-            textDecorationLine: "none",
-            textDecorationStyle: "solid",
-            textDecorationColor: "#000",
-            textTransform: "none",
-            textOrientation: "mixed",
-            whiteSpace: "normal",
-            shapePadding: 0,
-            isolation: "auto",
-            mixBlendMode: "normal",
-            solidColor: "#000",
-            solidOpacity: 1,
-          }}
-          d="M.97 1.817a.215.215 0 00-.19.216v1.291a.215.215 0 10.43 0v-1.29a.215.215 0 00-.24-.217z"
-          className="barrel-marker-vector_svg__net_0"
-          color="#000"
-          fontWeight={400}
-          fontFamily="sans-serif"
-          overflow="visible"
-          fill="none"
-          stroke="#000"
-          strokeWidth={0.192}
-          strokeLinecap="round"
-        />
-        <path
-          style={{
-            lineHeight: "normal",
-            fontVariantLigatures: "normal",
-            fontVariantPosition: "normal",
-            fontVariantCaps: "normal",
-            fontVariantNumeric: "normal",
-            fontVariantAlternates: "normal",
-            fontFeatureSettings: "normal",
-            textIndent: 0,
-            textAlign: "start",
-            textDecorationLine: "none",
-            textDecorationStyle: "solid",
-            textDecorationColor: "#000",
-            textTransform: "none",
-            textOrientation: "mixed",
-            whiteSpace: "normal",
-            shapePadding: 0,
-            isolation: "auto",
-            mixBlendMode: "normal",
-            solidColor: "#000",
-            solidOpacity: 1,
-          }}
-          d="M3.572.526a.215.215 0 00-.213.218v2.58a.215.215 0 10.43 0V.744a.215.215 0 00-.217-.218z"
-          className="barrel-marker-vector_svg__net_3"
-          color="#000"
-          fontWeight={400}
-          fontFamily="sans-serif"
-          overflow="visible"
-          fill="none"
-          stroke="#000"
-          strokeWidth={0.192}
-          strokeLinecap="round"
-        />
-        <path
-          style={{
-            lineHeight: "normal",
-            fontVariantLigatures: "normal",
-            fontVariantPosition: "normal",
-            fontVariantCaps: "normal",
-            fontVariantNumeric: "normal",
-            fontVariantAlternates: "normal",
-            fontFeatureSettings: "normal",
-            textIndent: 0,
-            textAlign: "start",
-            textDecorationLine: "none",
-            textDecorationStyle: "solid",
-            textDecorationColor: "#000",
-            textTransform: "none",
-            textOrientation: "mixed",
-            whiteSpace: "normal",
-            shapePadding: 0,
-            isolation: "auto",
-            mixBlendMode: "normal",
-            solidColor: "#000",
-            solidOpacity: 1,
-          }}
-          d="M4.431.096a.215.215 0 00-.21.219v3.01a.215.215 0 10.429 0V.314a.215.215 0 00-.219-.22z"
-          className="barrel-marker-vector_svg__net_4"
-          color="#000"
-          fontWeight={400}
-          fontFamily="sans-serif"
-          overflow="visible"
-          fill="none"
-          stroke="#000"
-          strokeWidth={0.192}
-          strokeLinecap="round"
+          fillRule="evenodd"
         />
       </g>
     </svg>

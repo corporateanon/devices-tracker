@@ -1,12 +1,13 @@
-import { FC } from 'react';
-import SvgBarrelMarkerVector from './generated/icons/BarrelMarkerVector';
 import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import { range } from 'lodash';
-import { ClassNameMap } from '@material-ui/styles';
+import { FC } from 'react';
+import SvgBarrelMarkerVector from './generated/icons/BarrelMarkerVector';
 
 export interface BarrelMarkerProps {
     level: number;
+    batteryLow?: boolean;
+    netOffline?: boolean;
 }
 
 const levelsList = (lim) =>
@@ -28,33 +29,47 @@ const useStyles = makeStyles({
         [`& ${levelsList(8)}`]: {
             visibility: 'hidden',
         },
+        '& .barrel-marker-vector_svg__bat': {
+            visibility: 'hidden',
+        },
+        '& .barrel-marker-vector_svg__net_offline': {
+            visibility: 'hidden',
+        },
     },
     ...stylesByLevel,
+    batteryLow: {
+        '& .barrel-marker-vector_svg__bat': {
+            visibility: 'visible',
+            fill: 'red',
+        },
+    },
+    netOffline: {
+        '& .barrel-marker-vector_svg__net_offline': {
+            visibility: 'visible',
+            fill: 'red',
+        },
+    },
 });
 
-type RealStyles = (
-    props?: any
-) => ClassNameMap<
-    | 'root'
-    | 'level_0'
-    | 'level_1'
-    | 'level_2'
-    | 'level_3'
-    | 'level_4'
-    | 'level_5'
-    | 'level_6'
-    | 'level_7'
->;
-
-export const BarrelMarker: FC<BarrelMarkerProps> = ({ level }) => {
-    const classes = (useStyles as RealStyles)();
-    let normalizedLevel = Math.round(level * 7);
+export const BarrelMarker: FC<BarrelMarkerProps> = ({
+    level,
+    batteryLow,
+    netOffline,
+}) => {
+    const classes = useStyles();
+    let normalizedLevel = Math.round(level * 8) - 1;
     if (normalizedLevel > 7) {
         normalizedLevel = 7;
     }
-    if (normalizedLevel < 0) {
-        normalizedLevel = 0;
+    if (normalizedLevel < -1) {
+        normalizedLevel = -1;
     }
-    const cls = clsx(classes.root, classes[`level_${normalizedLevel}`]);
+    const levelClass =
+        normalizedLevel >= 0 ? classes[`level_${normalizedLevel}`] : null;
+
+    const cls = clsx(classes.root, levelClass, {
+        [classes.batteryLow]: batteryLow,
+        [classes.netOffline]: netOffline,
+    });
     return <SvgBarrelMarkerVector className={cls} />;
 };
