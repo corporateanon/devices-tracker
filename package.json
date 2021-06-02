@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "generate": "graphql-code-generator --config codegen.yml",
-    "build:svgicons": "svgr --typescript --icon artwork/barrel-marker-vector.svg --out-dir=components/generated/icons",
+    "build:svgicons": "svgr --icon artwork/barrel-marker-vector.svg --out-dir=components/generated/icons",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
