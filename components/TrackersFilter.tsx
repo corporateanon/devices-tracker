@@ -1,5 +1,11 @@
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { FC } from 'react';
+import {
+    BATTERY_HIGH_FILTER_THRESHOLD,
+    BATTERY_LOW_FILTER_THRESHOLD,
+    LEVEL_HIGH_FILTER_THRESHOLD,
+    LEVEL_LOW_FILTER_THRESHOLD,
+} from '../lib/constants';
 import { HighLow, TelemetryFilter, YesNo } from '../lib/generated/graphql';
 
 export const TrackersFilter: FC<{
@@ -11,6 +17,13 @@ export const TrackersFilter: FC<{
         onChange(newValue);
     };
 
+    const batteryLowText = `${Math.round(BATTERY_LOW_FILTER_THRESHOLD * 100)}%`;
+    const batteryHighText = `${Math.round(
+        BATTERY_HIGH_FILTER_THRESHOLD * 100
+    )}%`;
+    const levelLowText = `${Math.round(LEVEL_LOW_FILTER_THRESHOLD * 100)}%`;
+    const levelHighText = `${Math.round(LEVEL_HIGH_FILTER_THRESHOLD * 100)}%`;
+
     return (
         <div>
             <div>
@@ -21,10 +34,10 @@ export const TrackersFilter: FC<{
                     onChange={handleChange('level')}
                 >
                     <ToggleButton value={HighLow.Low}>
-                        уровень {'<'} 10%
+                        уровень {'<'} {levelLowText}
                     </ToggleButton>
                     <ToggleButton value={HighLow.High}>
-                        уровень {'>'} 90%
+                        уровень {'>'} {levelHighText}
                     </ToggleButton>
                     <ToggleButton value="">все</ToggleButton>
                 </ToggleButtonGroup>
@@ -49,10 +62,10 @@ export const TrackersFilter: FC<{
                     onChange={handleChange('battery')}
                 >
                     <ToggleButton value={HighLow.Low}>
-                        акк. {'<'} 10%
+                        акк. {'<'} {batteryLowText}
                     </ToggleButton>
                     <ToggleButton value={HighLow.High}>
-                        акк. {'>'} 90%
+                        акк. {'>'} {batteryHighText}
                     </ToggleButton>
                     <ToggleButton value="">все</ToggleButton>
                 </ToggleButtonGroup>

@@ -4,18 +4,20 @@ import { Telemetry } from '../lib/generated/graphql';
 import ReactDOMServer from 'react-dom/server';
 import L from 'leaflet';
 import { BarrelMarker } from './BarrelMarker';
+import { BATTERY_ICON_THRESHOLD } from '../lib/constants';
 
 export const LeafletBarrelMarker: FC<{ telemetry: Telemetry }> = ({
     telemetry,
 }) => {
     const icon = L.divIcon({
-        iconSize: [50, 65],
-        iconAnchor: [25, 65],
+        iconSize: [52, 65],
+        iconAnchor: [27, 65],
+        popupAnchor: [0, -65],
         className: '',
         html: ReactDOMServer.renderToString(
             <BarrelMarker
                 level={telemetry.level}
-                battery={telemetry.battery < 0.3}
+                battery={telemetry.battery < BATTERY_ICON_THRESHOLD}
             />
         ),
     });
@@ -28,7 +30,10 @@ export const LeafletBarrelMarker: FC<{ telemetry: Telemetry }> = ({
         >
             <Popup>
                 <p>
-                    <b>Наполнение:</b> <span>{telemetry.level}</span>
+                    <b>Уровень:</b> <span>{telemetry.level}</span>
+                </p>
+                <p>
+                    <b>Батарея:</b> <span>{telemetry.battery}</span>
                 </p>
             </Popup>
         </Marker>
