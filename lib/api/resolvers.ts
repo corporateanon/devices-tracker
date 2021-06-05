@@ -3,10 +3,11 @@ import {
     BATTERY_HIGH_FILTER_THRESHOLD,
     BATTERY_LOW_FILTER_THRESHOLD,
     LEVEL_HIGH_FILTER_THRESHOLD,
-    LEVEL_LOW_FILTER_THRESHOLD
+    LEVEL_LOW_FILTER_THRESHOLD,
+    OFFLINE_FILTER_TIMEOUT,
 } from '../constants';
 import { Telemetry } from '../db/models';
-import { HighLow, Resolvers } from '../generated/graphql';
+import { HighLow, Resolvers, YesNo } from '../generated/graphql';
 
 export const resolvers: Resolvers<any> = {
     Query: {
@@ -22,11 +23,25 @@ export const resolvers: Resolvers<any> = {
                     .where('battery')
                     .gte(BATTERY_HIGH_FILTER_THRESHOLD);
             }
+
             if (filter.level === HighLow.Low) {
                 query = query.where('level').lte(LEVEL_LOW_FILTER_THRESHOLD);
             }
             if (filter.level === HighLow.High) {
                 query = query.where('level').gte(LEVEL_HIGH_FILTER_THRESHOLD);
+            }
+
+            if (filter.online === YesNo.Yes) {
+                const timeThreshold = new Date(
+                    new Date().valueOf() - OFFLINE_FILTER_TIMEOUT
+                );
+                query = query.where('updatedAt').gt(timeThreshold.valueOf());
+            }
+            if (filter.online === YesNo.No) {
+                const timeThreshold = new Date(
+                    new Date().valueOf() - OFFLINE_FILTER_TIMEOUT
+                );
+                query = query.where('updatedAt').lte(timeThreshold.valueOf());
             }
 
             const data = await query.exec();
