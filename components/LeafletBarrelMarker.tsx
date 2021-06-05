@@ -1,12 +1,3 @@
-/*
-
-    const icon = L.divIcon({
-      className: 'custom-icon',
-      html: ReactDOMServer.renderToString(<Icon perc={this.state.key}/>)
-    });
-
-    */
-
 import { FC } from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import { Telemetry } from '../lib/generated/graphql';
@@ -18,12 +9,13 @@ export const LeafletBarrelMarker: FC<{ telemetry: Telemetry }> = ({
     telemetry,
 }) => {
     const icon = L.divIcon({
-        iconSize: [50, 50],
+        iconSize: [50, 65],
+        iconAnchor: [25, 65],
         className: '',
         html: ReactDOMServer.renderToString(
             <BarrelMarker
                 level={telemetry.level}
-                batteryLow={telemetry.battery < 0.3}
+                battery={telemetry.battery < 0.3}
             />
         ),
     });

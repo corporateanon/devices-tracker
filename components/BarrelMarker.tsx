@@ -2,74 +2,90 @@ import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import { range } from 'lodash';
 import { FC } from 'react';
-import SvgBarrelMarkerVector from './generated/icons/BarrelMarkerVector';
+import SvgMarker from './generated/icons/Marker';
 
 export interface BarrelMarkerProps {
     level: number;
-    batteryLow?: boolean;
-    netOffline?: boolean;
+    battery?: boolean;
+    offline?: boolean;
+    unknown?: boolean;
 }
 
+const C_LEVEL = 'marker_svg__level';
+const C_OFFLINE = 'marker_svg__offline';
+const C_BATTERY = 'marker_svg__battery';
+const C_UNKNOWN = 'marker_svg__unknown';
+const SCALE_FACTOR = 0.5;
+
 const levelsList = (lim) =>
-    range(0, lim)
-        .map((l) => `.barrel-marker-vector_svg__barrel_${l}`)
+    range(1, lim + 1)
+        .map((l) => `.${C_LEVEL}${l}`)
         .join(',');
 
 const stylesByLevel = Object.fromEntries(
-    range(0, 8).map((l) => [
+    range(1, 7).map((l) => [
         `level_${l}`,
-        { [`& ${levelsList(l + 1)}`]: { visibility: 'visible' } },
+        { [`& .${C_LEVEL}${l}`]: { visibility: 'visible' } },
     ])
 );
 
 const useStyles = makeStyles({
     root: {
-        height: 50,
-        width: 50,
-        [`& ${levelsList(8)}`]: {
+        height: 129 * SCALE_FACTOR,
+        width: 104 * SCALE_FACTOR,
+        [`& ${levelsList(6)}`]: {
             visibility: 'hidden',
         },
-        '& .barrel-marker-vector_svg__bat': {
+        [`& .${C_BATTERY}`]: {
             visibility: 'hidden',
         },
-        '& .barrel-marker-vector_svg__net_offline': {
+        [`& .${C_OFFLINE}`]: {
             visibility: 'hidden',
+        },
+        [`& .${C_UNKNOWN}`]: {
+            visibility: 'hidden',
+        },
+    },
+    battery: {
+        [`& .${C_BATTERY}`]: {
+            visibility: 'visible',
+        },
+    },
+    offline: {
+        [`& .${C_OFFLINE}`]: {
+            visibility: 'visible',
+        },
+    },
+    unknown: {
+        [`& .${C_UNKNOWN}`]: {
+            visibility: 'visible',
         },
     },
     ...stylesByLevel,
-    batteryLow: {
-        '& .barrel-marker-vector_svg__bat': {
-            visibility: 'visible',
-            fill: 'red',
-        },
-    },
-    netOffline: {
-        '& .barrel-marker-vector_svg__net_offline': {
-            visibility: 'visible',
-            fill: 'red',
-        },
-    },
 });
 
 export const BarrelMarker: FC<BarrelMarkerProps> = ({
     level,
-    batteryLow,
-    netOffline,
+    battery,
+    offline,
+    unknown,
 }) => {
     const classes = useStyles();
-    let normalizedLevel = Math.round(level * 8) - 1;
-    if (normalizedLevel > 7) {
-        normalizedLevel = 7;
+    if (level > 1) {
+        level = 1;
     }
-    if (normalizedLevel < -1) {
-        normalizedLevel = -1;
+    if (level < 0) {
+        level = 0;
     }
+    const normalizedLevel = Math.round(level * 5);
+
     const levelClass =
-        normalizedLevel >= 0 ? classes[`level_${normalizedLevel}`] : null;
+        normalizedLevel > 0 ? classes[`level_${normalizedLevel}`] : null;
 
     const cls = clsx(classes.root, levelClass, {
-        [classes.batteryLow]: batteryLow,
-        [classes.netOffline]: netOffline,
+        [classes.battery]: battery,
+        [classes.offline]: offline,
+        [classes.unknown]: unknown,
     });
-    return <SvgBarrelMarkerVector className={cls} />;
+    return <SvgMarker className={cls} />;
 };

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "generate": "graphql-code-generator --config codegen.yml",
-    "build:svgicons": "svgr --icon artwork/barrel-marker-vector.svg --out-dir=components/generated/icons",
+    "build:svg": "./scripts/yarn-build-svg.sh",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
