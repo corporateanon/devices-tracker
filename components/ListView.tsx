@@ -1,15 +1,43 @@
 import moment from 'moment';
+import 'moment/locale/ru';
+import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 import ReactDataGrid, { Column } from 'react-data-grid';
 import { Telemetry, useGetTelemetriesQuery } from '../lib/generated/graphql';
-import 'moment/locale/ru';
+import { isBatteryLow, isLevelHigh, isOffline } from '../lib/telemetryUtils';
 import { queryToFilters } from './filters/filters';
-import { useRouter } from 'next/router';
+import classes from './ListView.module.css';
+
+import clsx from 'clsx';
+const formatter = new Intl.NumberFormat(undefined, {
+    style: 'percent',
+    maximumFractionDigits: 0,
+});
+
+const percentFormatter = ({ row, column: { key } }) => (
+    <>{formatter.format(row[key])}</>
+);
 
 const columns: readonly Column<Telemetry>[] = [
     { key: 'id', name: 'ID' },
-    { key: 'level', name: 'Уровень, %' },
-    { key: 'battery', name: 'Аккумулятор, %' },
+    {
+        key: 'level',
+        name: 'Уровень, %',
+        cellClass: (row) =>
+            clsx(classes.cellNumber, {
+                [classes.cellSuccess]: isLevelHigh(row),
+            }),
+        formatter: percentFormatter,
+    },
+    {
+        key: 'battery',
+        name: 'Аккумулятор, %',
+        cellClass: (row) =>
+            clsx(classes.cellNumber, {
+                [classes.cellDanger]: isBatteryLow(row),
+            }),
+        formatter: percentFormatter,
+    },
     {
         key: 'updatedAt',
         name: 'Онлайн',
@@ -20,6 +48,10 @@ const columns: readonly Column<Telemetry>[] = [
                 </div>
             );
         },
+        cellClass: (row) =>
+            clsx({
+                [classes.cellDanger]: isOffline(row),
+            }),
     },
 ];
 

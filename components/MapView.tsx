@@ -42,7 +42,10 @@ export const MapView: FC = () => {
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 {data &&
                     data.getTelemetries.map((telemetry) => (
-                        <LeafletBarrelMarker telemetry={telemetry} />
+                        <LeafletBarrelMarker
+                            key={telemetry.id}
+                            telemetry={telemetry}
+                        />
                     ))}
             </MapContainer>
         </>

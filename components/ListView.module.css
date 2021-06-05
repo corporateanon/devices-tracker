@@ -1,0 +1,12 @@
+.cellNumber {
+    text-align: end;
+}
+
+.cellDanger {
+    color: red;
+}
+
+.cellSuccess {
+    color: green;
+    font-weight: bold;
+}
