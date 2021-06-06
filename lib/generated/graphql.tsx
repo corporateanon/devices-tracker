@@ -16,6 +16,20 @@ export type Scalars = {
   Float: number;
 };
 
+export type Contact = {
+  __typename?: 'Contact';
+  _id: Scalars['ID'];
+  updatedAt: Scalars['String'];
+  name: Scalars['String'];
+  phone?: Maybe<Scalars['String']>;
+};
+
+export type ContactInput = {
+  _id?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+  phone?: Maybe<Scalars['String']>;
+};
+
 export enum HighLow {
   Low = 'LOW',
   High = 'HIGH'
@@ -23,12 +37,25 @@ export enum HighLow {
 
 export type Query = {
   __typename?: 'Query';
+  getContact?: Maybe<Contact>;
+  getContacts: Array<Contact>;
   getTelemetries?: Maybe<Array<Maybe<Telemetry>>>;
+  saveContact?: Maybe<Contact>;
+};
+
+
+export type QueryGetContactArgs = {
+  id: Scalars['ID'];
 };
 
 
 export type QueryGetTelemetriesArgs = {
   filter: TelemetryFilter;
+};
+
+
+export type QuerySaveContactArgs = {
+  contact: ContactInput;
 };
 
 export type Telemetry = {
@@ -143,12 +170,14 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Contact: ResolverTypeWrapper<Contact>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  String: ResolverTypeWrapper<Scalars['String']>;
+  ContactInput: ContactInput;
   HighLow: HighLow;
   Query: ResolverTypeWrapper<{}>;
   Telemetry: ResolverTypeWrapper<Telemetry>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   TelemetryFilter: TelemetryFilter;
   YesNo: YesNo;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
@@ -156,17 +185,30 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Contact: Contact;
+  ID: Scalars['ID'];
+  String: Scalars['String'];
+  ContactInput: ContactInput;
   Query: {};
   Telemetry: Telemetry;
-  ID: Scalars['ID'];
   Float: Scalars['Float'];
-  String: Scalars['String'];
   TelemetryFilter: TelemetryFilter;
   Boolean: Scalars['Boolean'];
 };
 
+export type ContactResolvers<ContextType = any, ParentType extends ResolversParentTypes['Contact'] = ResolversParentTypes['Contact']> = {
+  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  getContact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<QueryGetContactArgs, 'id'>>;
+  getContacts?: Resolver<Array<ResolversTypes['Contact']>, ParentType, ContextType>;
   getTelemetries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Telemetry']>>>, ParentType, ContextType, RequireFields<QueryGetTelemetriesArgs, 'filter'>>;
+  saveContact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<QuerySaveContactArgs, 'contact'>>;
 };
 
 export type TelemetryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Telemetry'] = ResolversParentTypes['Telemetry']> = {
@@ -180,6 +222,7 @@ export type TelemetryResolvers<ContextType = any, ParentType extends ResolversPa
 };
 
 export type Resolvers<ContextType = any> = {
+  Contact?: ContactResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Telemetry?: TelemetryResolvers<ContextType>;
 };

@@ -5,11 +5,11 @@ import {
     LEVEL_HIGH_FILTER_THRESHOLD,
     LEVEL_LOW_FILTER_THRESHOLD,
     OFFLINE_FILTER_TIMEOUT,
-} from '../constants';
-import { Telemetry } from '../db/models';
-import { HighLow, Resolvers, YesNo } from '../generated/graphql';
+} from '../../constants';
+import { Telemetry } from '../../db/models';
+import { HighLow, Resolvers, YesNo } from '../../generated/graphql';
 
-export const resolvers: Resolvers<any> = {
+export const telemetryResolvers: Resolvers<any> = {
     Query: {
         async getTelemetries(_, { filter }) {
             let query = Telemetry.find();

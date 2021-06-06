@@ -1,5 +1,5 @@
 overwrite: true
-schema: lib/api/schema.ts
+schema: lib/api/schemas/**/*.ts
 documents: lib/api/queries.ts
 
 generates:
