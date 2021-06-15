@@ -9,6 +9,8 @@ import { queryToFilters } from './filters/filters';
 import classes from './ListView.module.css';
 
 import clsx from 'clsx';
+import { NavigationPane } from './NavigationPane';
+import { Grid, makeStyles } from '@material-ui/core';
 const formatter = new Intl.NumberFormat(undefined, {
     style: 'percent',
     maximumFractionDigits: 0,
@@ -55,7 +57,20 @@ const columns: readonly Column<Telemetry>[] = [
     },
 ];
 
+const useStyles = makeStyles({
+    root: {
+        height: '100%',
+    },
+    gridWrapper: {
+        flex: 1,
+    },
+    grid: {
+        height: '100%',
+    },
+});
+
 export function ListView() {
+    const classes = useStyles();
     const { query } = useRouter();
     const { error, data, loading } = useGetTelemetriesQuery({
         pollInterval: 60000,
@@ -69,5 +84,18 @@ export function ListView() {
         return data?.getTelemetries ?? [];
     }, [data]);
 
-    return <ReactDataGrid columns={columns} rows={rows} />;
+    return (
+        <Grid container direction="column" className={classes.root} spacing={2}>
+            <Grid item>
+                <NavigationPane />
+            </Grid>
+            <Grid item className={classes.gridWrapper}>
+                <ReactDataGrid
+                    columns={columns}
+                    rows={rows}
+                    className={classes.grid}
+                />
+            </Grid>
+        </Grid>
+    );
 }

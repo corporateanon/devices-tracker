@@ -1,5 +1,6 @@
+import { Grid, makeStyles, MenuItem, TextField } from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
-import { FC } from 'react';
+import { ChangeEvent, FC } from 'react';
 import {
     BATTERY_HIGH_FILTER_THRESHOLD,
     BATTERY_LOW_FILTER_THRESHOLD,
@@ -8,12 +9,21 @@ import {
 } from '../lib/constants';
 import { HighLow, TelemetryFilter, YesNo } from '../lib/generated/graphql';
 
+const useStyles = makeStyles((theme) => ({
+    filterItem: {
+        width: theme.spacing(20),
+    },
+}));
+
 export const TrackersFilter: FC<{
     value: TelemetryFilter;
     onChange: (v: TelemetryFilter) => void;
 }> = ({ value, onChange }) => {
-    const handleChange = (field) => (_, val: string) => {
-        const newValue = { ...value, [field]: val === '' ? null : val };
+    const classes = useStyles();
+
+    const handleChange = (field) => (event: ChangeEvent<HTMLInputElement>) => {
+        const v = event.target.value;
+        const newValue = { ...value, [field]: v === 'not_selected' ? null : v };
         onChange(newValue);
     };
 
@@ -25,51 +35,54 @@ export const TrackersFilter: FC<{
     const levelHighText = `${Math.round(LEVEL_HIGH_FILTER_THRESHOLD * 100)}%`;
 
     return (
-        <div>
-            <div>
-                <ToggleButtonGroup
-                    exclusive
-                    size="small"
-                    value={value.level ?? ''}
+        <Grid container spacing={1}>
+            <Grid item>
+                <TextField
+                    className={classes.filterItem}
+                    select
+                    value={value.level ?? 'not_selected'}
                     onChange={handleChange('level')}
+                    label="Уровень"
                 >
-                    <ToggleButton value={HighLow.Low}>
-                        уровень {'<'} {levelLowText}
-                    </ToggleButton>
-                    <ToggleButton value={HighLow.High}>
-                        уровень {'>'} {levelHighText}
-                    </ToggleButton>
-                    <ToggleButton value="">все</ToggleButton>
-                </ToggleButtonGroup>
-            </div>
-            <div>
-                <ToggleButtonGroup
-                    exclusive
-                    size="small"
-                    value={value.online ?? ''}
+                    <MenuItem value="not_selected">не выбран</MenuItem>
+                    <MenuItem value={HighLow.Low}>
+                        {'<'} {levelLowText}
+                    </MenuItem>
+                    <MenuItem value={HighLow.High}>
+                        {'>'} {levelHighText}
+                    </MenuItem>
+                </TextField>
+            </Grid>
+            <Grid item>
+                <TextField
+                    className={classes.filterItem}
+                    select
+                    label="Статус"
+                    value={value.online ?? 'not_selected'}
                     onChange={handleChange('online')}
                 >
-                    <ToggleButton value={YesNo.Yes}>онлайн</ToggleButton>
-                    <ToggleButton value={YesNo.No}>оффлайн</ToggleButton>
-                    <ToggleButton value="">все</ToggleButton>
-                </ToggleButtonGroup>
-            </div>
-            <div>
-                <ToggleButtonGroup
-                    exclusive
-                    size="small"
-                    value={value.battery ?? ''}
+                    <MenuItem value="not_selected">не выбран</MenuItem>
+                    <MenuItem value={YesNo.Yes}>онлайн</MenuItem>
+                    <MenuItem value={YesNo.No}>оффлайн</MenuItem>
+                </TextField>
+            </Grid>
+            <Grid item>
+                <TextField
+                    className={classes.filterItem}
+                    select
+                    label="Заряд"
+                    value={value.battery ?? 'not_selected'}
                     onChange={handleChange('battery')}
                 >
-                    <ToggleButton value={HighLow.Low}>
-                        акк. {'<'} {batteryLowText}
-                    </ToggleButton>
-                    <ToggleButton value={HighLow.High}>
-                        акк. {'>'} {batteryHighText}
-                    </ToggleButton>
-                    <ToggleButton value="">все</ToggleButton>
-                </ToggleButtonGroup>
-            </div>
-        </div>
+                    <MenuItem value="not_selected">не выбран</MenuItem>
+                    <MenuItem value={HighLow.Low}>
+                        {'<'} {batteryLowText}
+                    </MenuItem>
+                    <MenuItem value={HighLow.High}>
+                        {'>'} {batteryHighText}
+                    </MenuItem>
+                </TextField>
+            </Grid>
+        </Grid>
     );
 };

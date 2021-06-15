@@ -8,8 +8,9 @@ import {
 } from '../../constants';
 import { Telemetry } from '../../db/models';
 import { HighLow, Resolvers, YesNo } from '../../generated/graphql';
+import { ApplicationContext } from '../applicationContext';
 
-export const telemetryResolvers: Resolvers<any> = {
+export const telemetryResolvers: Resolvers<ApplicationContext> = {
     Query: {
         async getTelemetries(_, { filter }) {
             let query = Telemetry.find();

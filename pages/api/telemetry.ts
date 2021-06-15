@@ -7,6 +7,10 @@ const handler: NextApiHandler = async (req, res) => {
         return;
     }
 
+    const { key } = req.query;
+    if (key !== process.env.API_KEY) {
+        throw new Error('Wrong API key');
+    }
     const body = req.body;
 
     const doc = await Telemetry.findOneAndUpdate(

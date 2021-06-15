@@ -8,6 +8,7 @@ import { ListView } from './ListView';
 import { MapView } from './MapView';
 import { NavigationPane } from './NavigationPane';
 import classes from './Dashboard.module.css';
+import { useSession } from 'next-auth/client';
 
 export const Dashboard: FC = () => {
     const events = new EventEmitter();
@@ -19,9 +20,6 @@ export const Dashboard: FC = () => {
 
     return (
         <Grid container className={classes.root}>
-            <Grid item>
-                <NavigationPane />
-            </Grid>
             <Grid item>
                 <SplitterLayout onDragEnd={handleResize}>
                     <ListView />

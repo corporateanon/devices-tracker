@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 import { Contact, IContact } from '../../db/Contact';
 import { Contact as GQLContact, Resolvers } from '../../generated/graphql';
+import { ApplicationContext } from '../applicationContext';
 
 function adaptContact(_contact: any): GQLContact {
     const contact = _contact.toJSON();
@@ -11,7 +12,7 @@ function adaptContact(_contact: any): GQLContact {
     };
 }
 
-export const contactResolvers: Resolvers<any> = {
+export const contactResolvers: Resolvers<ApplicationContext> = {
     Query: {
         async getContact(_, { id }) {
             const contact = await Contact.findById(id);
