@@ -1,17 +1,10 @@
+import { compose } from 'lodash/fp';
 import { NextApiHandler } from 'next';
 import { Telemetry } from '../../../lib/db/models';
+import { apiKey } from '../../../lib/middleware/apiKey';
+import { method } from '../../../lib/middleware/method';
 
 const handler: NextApiHandler = async (req, res) => {
-    if (req.method !== 'POST') {
-        res.status(400).end();
-        return;
-    }
-    const { key } = req.query;
-    if (key !== process.env.API_KEY) {
-        res.status(403).json({ error: 'Wrong API key' });
-        return;
-    }
-
     const telemetriesList = req.body;
 
     const docs = [];
@@ -32,4 +25,5 @@ const handler: NextApiHandler = async (req, res) => {
 
     res.status(201).json(docs);
 };
-export default handler;
+
+export default compose(apiKey(), method('post'))(handler);

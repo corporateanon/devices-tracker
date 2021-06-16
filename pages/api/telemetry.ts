@@ -1,17 +1,10 @@
 import { NextApiHandler } from 'next';
 import { Telemetry } from '../../lib/db/models';
+import { apiKey } from '../../lib/middleware/apiKey';
+import { method } from '../../lib/middleware/method';
+import { compose } from 'lodash/fp';
 
 const handler: NextApiHandler = async (req, res) => {
-    if (req.method !== 'POST') {
-        res.status(400).end();
-        return;
-    }
-
-    const { key } = req.query;
-    if (key !== process.env.API_KEY) {
-        res.status(403).json({ error: 'Wrong API key' });
-        return;
-    }
     const body = req.body;
 
     const doc = await Telemetry.findOneAndUpdate(
@@ -28,4 +21,5 @@ const handler: NextApiHandler = async (req, res) => {
 
     res.status(201).json(doc);
 };
-export default handler;
+
+export default compose(apiKey(), method('post'))(handler);
