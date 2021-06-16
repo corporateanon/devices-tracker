@@ -6,6 +6,11 @@ const handler: NextApiHandler = async (req, res) => {
         res.status(400).end();
         return;
     }
+    const { key } = req.query;
+    if (key !== process.env.API_KEY) {
+        res.status(403).json({ error: 'Wrong API key' });
+        return;
+    }
 
     const telemetriesList = req.body;
 

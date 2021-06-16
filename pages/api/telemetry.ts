@@ -9,7 +9,8 @@ const handler: NextApiHandler = async (req, res) => {
 
     const { key } = req.query;
     if (key !== process.env.API_KEY) {
-        throw new Error('Wrong API key');
+        res.status(403).json({ error: 'Wrong API key' });
+        return;
     }
     const body = req.body;
 
