@@ -3,6 +3,8 @@ import { NextApiHandler } from 'next';
 import { Telemetry } from '../../../lib/db/models';
 import { apiKey } from '../../../lib/middleware/apiKey';
 import { method } from '../../../lib/middleware/method';
+import { schemaPostTelemetryBatchBody } from '../../../lib/json-schemas';
+import { validate } from '../../../lib/middleware/validate';
 
 const handler: NextApiHandler = async (req, res) => {
     const telemetriesList = req.body;
@@ -26,4 +28,8 @@ const handler: NextApiHandler = async (req, res) => {
     res.status(201).json(docs);
 };
 
-export default compose(apiKey(), method('post'))(handler);
+export default compose(
+    validate(schemaPostTelemetryBatchBody),
+    apiKey(),
+    method('post')
+)(handler);

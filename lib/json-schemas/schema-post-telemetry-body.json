@@ -1,0 +1,31 @@
+{
+    "title": "Telemetry",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["_id", "battery", "level", "lat", "lng"],
+    "properties": {
+        "_id": {
+            "type": "string"
+        },
+        "battery": {
+            "type": ["number"],
+            "maximum": 1,
+            "minimum": 0
+        },
+        "level": {
+            "type": ["number"],
+            "maximum": 1,
+            "minimum": 0
+        },
+        "lat": {
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90
+        },
+        "lng": {
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180
+        }
+    }
+}
