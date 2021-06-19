@@ -5,7 +5,10 @@ documents: lib/api/queries.ts
 generates:
     lib/generated/graphql.tsx:
         plugins:
-            - 'typescript'
-            - 'typescript-operations'
-            - 'typescript-resolvers'
-            - 'typescript-react-apollo'
+            - typescript
+            - typescript-operations
+            - typescript-resolvers
+            - typescript-react-apollo
+    lib/generated/schema.graphql:
+        plugins:
+            - schema-ast

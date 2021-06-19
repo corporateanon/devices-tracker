@@ -30,5 +30,6 @@ export const telemetrySchema = gql`
 
     extend type Query {
         getTelemetries(filter: TelemetryFilter!): [Telemetry]
+        getTelemetry(ID: ID!): Telemetry
     }
 `;

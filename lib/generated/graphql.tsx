@@ -56,6 +56,7 @@ export type Query = {
   getContact?: Maybe<Contact>;
   getContacts: Array<Contact>;
   getTelemetries?: Maybe<Array<Maybe<Telemetry>>>;
+  getTelemetry?: Maybe<Telemetry>;
 };
 
 
@@ -66,6 +67,11 @@ export type QueryGetContactArgs = {
 
 export type QueryGetTelemetriesArgs = {
   filter: TelemetryFilter;
+};
+
+
+export type QueryGetTelemetryArgs = {
+  ID: Scalars['ID'];
 };
 
 export type Telemetry = {
@@ -100,6 +106,19 @@ export type GetTelemetriesQuery = (
     { __typename?: 'Telemetry' }
     & Pick<Telemetry, 'id' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
   )>>> }
+);
+
+export type GetTelemetryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetTelemetryQuery = (
+  { __typename?: 'Query' }
+  & { getTelemetry?: Maybe<(
+    { __typename?: 'Telemetry' }
+    & Pick<Telemetry, 'id' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
+  )> }
 );
 
 
@@ -238,6 +257,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getContact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<QueryGetContactArgs, 'id'>>;
   getContacts?: Resolver<Array<ResolversTypes['Contact']>, ParentType, ContextType>;
   getTelemetries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Telemetry']>>>, ParentType, ContextType, RequireFields<QueryGetTelemetriesArgs, 'filter'>>;
+  getTelemetry?: Resolver<Maybe<ResolversTypes['Telemetry']>, ParentType, ContextType, RequireFields<QueryGetTelemetryArgs, 'ID'>>;
 };
 
 export type TelemetryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Telemetry'] = ResolversParentTypes['Telemetry']> = {
@@ -307,3 +327,43 @@ export function useGetTelemetriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetTelemetriesQueryHookResult = ReturnType<typeof useGetTelemetriesQuery>;
 export type GetTelemetriesLazyQueryHookResult = ReturnType<typeof useGetTelemetriesLazyQuery>;
 export type GetTelemetriesQueryResult = Apollo.QueryResult<GetTelemetriesQuery, GetTelemetriesQueryVariables>;
+export const GetTelemetryDocument = gql`
+    query GetTelemetry($id: ID!) {
+  getTelemetry(ID: $id) {
+    id
+    lat
+    lng
+    level
+    battery
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useGetTelemetryQuery__
+ *
+ * To run a query within a React component, call `useGetTelemetryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTelemetryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTelemetryQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetTelemetryQuery(baseOptions: Apollo.QueryHookOptions<GetTelemetryQuery, GetTelemetryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTelemetryQuery, GetTelemetryQueryVariables>(GetTelemetryDocument, options);
+      }
+export function useGetTelemetryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTelemetryQuery, GetTelemetryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTelemetryQuery, GetTelemetryQueryVariables>(GetTelemetryDocument, options);
+        }
+export type GetTelemetryQueryHookResult = ReturnType<typeof useGetTelemetryQuery>;
+export type GetTelemetryLazyQueryHookResult = ReturnType<typeof useGetTelemetryLazyQuery>;
+export type GetTelemetryQueryResult = Apollo.QueryResult<GetTelemetryQuery, GetTelemetryQueryVariables>;

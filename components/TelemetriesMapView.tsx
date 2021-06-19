@@ -1,24 +1,14 @@
 import { useRouter } from 'next/router';
 import { FC } from 'react';
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import { useEventEmitter } from '../hooks/useEventEmitter';
 import { useGetTelemetriesQuery } from '../lib/generated/graphql';
 import { queryToFilters } from './filters/filters';
 import { LeafletBarrelMarker } from './LeafletBarrelMarker';
 
-const MapSizeUpdater: FC = () => {
-    const map = useMap();
-    useEventEmitter({
-        resize: () => {
-            map.invalidateSize();
-        },
-    });
-    return null;
-};
-
-export const MapView: FC = () => {
+export const TelemetriesMapView: FC = () => {
     const { query } = useRouter();
-    const { error, data, loading } = useGetTelemetriesQuery({
+    const { data } = useGetTelemetriesQuery({
         pollInterval: 60000,
         ssr: false,
         variables: {
@@ -38,7 +28,6 @@ export const MapView: FC = () => {
                 zoom={13}
                 style={{ height: '100%' }}
             >
-                <MapSizeUpdater />
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 {data &&
                     data.getTelemetries.map((telemetry) => (

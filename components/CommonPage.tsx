@@ -3,9 +3,7 @@ import { ApolloProvider } from '@apollo/client/react';
 import NoSsr from '@material-ui/core/NoSsr';
 import { NextPage } from 'next';
 import { useSession } from 'next-auth/client';
-import dynamic from 'next/dynamic';
 import React from 'react';
-import { Dashboard } from '../components/Dashboard';
 import { SplashScreen } from '../components/SplashScreen';
 import { SessionContextProvider } from '../lib/sessionContext';
 
@@ -14,12 +12,7 @@ const client = new ApolloClient({
     cache: new InMemoryCache(),
 });
 
-// const DynamicDashboard = dynamic(
-//     () => import('../components/Dashboard').then((m) => m.Dashboard),
-//     { ssr: false }
-// );
-
-const HomePage: NextPage = () => {
+const CommonPage: NextPage = ({ children }) => {
     const [session, loading] = useSession();
 
     if (!session) {
@@ -33,12 +26,10 @@ const HomePage: NextPage = () => {
     return (
         <>
             <SessionContextProvider value={[session, loading]}>
-                <ApolloProvider client={client}>
-                    <Dashboard />
-                </ApolloProvider>
+                <ApolloProvider client={client}>{children}</ApolloProvider>
             </SessionContextProvider>
         </>
     );
 };
 
-export default HomePage;
+export default CommonPage;

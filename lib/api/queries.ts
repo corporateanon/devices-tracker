@@ -11,4 +11,15 @@ gql`
             updatedAt
         }
     }
+
+    query GetTelemetry($id: ID!) {
+        getTelemetry(ID: $id) {
+            id
+            lat
+            lng
+            level
+            battery
+            updatedAt
+        }
+    }
 `;

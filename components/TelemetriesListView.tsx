@@ -11,6 +11,7 @@ import classes from './ListView.module.css';
 import clsx from 'clsx';
 import { NavigationPane } from './NavigationPane';
 import { Grid, makeStyles } from '@material-ui/core';
+import TelemetryRowEditor from './TelemetryRowEditor';
 const formatter = new Intl.NumberFormat(undefined, {
     style: 'percent',
     maximumFractionDigits: 0,
@@ -21,7 +22,7 @@ const percentFormatter = ({ row, column: { key } }) => (
 );
 
 const columns: readonly Column<Telemetry>[] = [
-    { key: 'id', name: 'ID' },
+    { key: 'id', name: 'ID', editable: true, editor: TelemetryRowEditor },
     {
         key: 'level',
         name: 'Уровень, %',
@@ -69,7 +70,7 @@ const useStyles = makeStyles({
     },
 });
 
-export function ListView() {
+export function TelemetriesListView() {
     const classes = useStyles();
     const { query } = useRouter();
     const { error, data, loading } = useGetTelemetriesQuery({
