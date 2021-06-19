@@ -1,32 +1,23 @@
-import { Document } from 'mongoose';
-import { Contact, IContact } from '../../db/Contact';
-import { Contact as GQLContact, Resolvers } from '../../generated/graphql';
+import { Contact } from '../../db/Contact';
+import { Resolvers } from '../../generated/graphql';
 import { ApplicationContext } from '../applicationContext';
-
-function adaptContact(_contact: any): GQLContact {
-    const contact = _contact.toJSON();
-    return {
-        ...contact,
-        _id: contact._id.toString(),
-        updatedAt: contact.updatedAt.toISOString(),
-    };
-}
 
 export const contactResolvers: Resolvers<ApplicationContext> = {
     Query: {
         async getContact(_, { id }) {
-            const contact = await Contact.findById(id);
+            const contact = await Contact.findById(id).lean();
             if (!contact) {
                 return null;
             }
-            return adaptContact(contact);
+            return contact;
         },
 
         async getContacts() {
-            const contacts = await Contact.find();
-            return contacts.map(adaptContact);
+            const contacts = await Contact.find().lean();
+            return contacts;
         },
-
+    },
+    Mutation: {
         async saveContact(_, { contact: contactInput }) {
             if (!contactInput._id) {
                 const doc = new Contact({
@@ -34,7 +25,7 @@ export const contactResolvers: Resolvers<ApplicationContext> = {
                     updatedAt: new Date(),
                 });
                 await doc.save();
-                return adaptContact(doc);
+                return doc;
             }
 
             const doc = await Contact.findByIdAndUpdate(
@@ -50,7 +41,7 @@ export const contactResolvers: Resolvers<ApplicationContext> = {
             if (!doc) {
                 return null;
             }
-            return adaptContact(doc);
+            return doc;
         },
     },
 };

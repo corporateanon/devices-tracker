@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
@@ -14,12 +14,14 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
+  ObjectID: any;
 };
 
 export type Contact = {
   __typename?: 'Contact';
-  _id: Scalars['ID'];
-  updatedAt: Scalars['String'];
+  _id: Scalars['ObjectID'];
+  updatedAt: Scalars['DateTime'];
   name: Scalars['String'];
   phone?: Maybe<Scalars['String']>;
 };
@@ -30,17 +32,30 @@ export type ContactInput = {
   phone?: Maybe<Scalars['String']>;
 };
 
+
 export enum HighLow {
   Low = 'LOW',
   High = 'HIGH'
 }
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  _?: Maybe<Scalars['Boolean']>;
+  saveContact?: Maybe<Contact>;
+};
+
+
+export type MutationSaveContactArgs = {
+  contact: ContactInput;
+};
+
+
 export type Query = {
   __typename?: 'Query';
+  _?: Maybe<Scalars['Boolean']>;
   getContact?: Maybe<Contact>;
   getContacts: Array<Contact>;
   getTelemetries?: Maybe<Array<Maybe<Telemetry>>>;
-  saveContact?: Maybe<Contact>;
 };
 
 
@@ -51,11 +66,6 @@ export type QueryGetContactArgs = {
 
 export type QueryGetTelemetriesArgs = {
   filter: TelemetryFilter;
-};
-
-
-export type QuerySaveContactArgs = {
-  contact: ContactInput;
 };
 
 export type Telemetry = {
@@ -171,44 +181,63 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Contact: ResolverTypeWrapper<Contact>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
   String: ResolverTypeWrapper<Scalars['String']>;
   ContactInput: ContactInput;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   HighLow: HighLow;
+  Mutation: ResolverTypeWrapper<{}>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  ObjectID: ResolverTypeWrapper<Scalars['ObjectID']>;
   Query: ResolverTypeWrapper<{}>;
   Telemetry: ResolverTypeWrapper<Telemetry>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   TelemetryFilter: TelemetryFilter;
   YesNo: YesNo;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Contact: Contact;
-  ID: Scalars['ID'];
   String: Scalars['String'];
   ContactInput: ContactInput;
+  ID: Scalars['ID'];
+  DateTime: Scalars['DateTime'];
+  Mutation: {};
+  Boolean: Scalars['Boolean'];
+  ObjectID: Scalars['ObjectID'];
   Query: {};
   Telemetry: Telemetry;
   Float: Scalars['Float'];
   TelemetryFilter: TelemetryFilter;
-  Boolean: Scalars['Boolean'];
 };
 
 export type ContactResolvers<ContextType = any, ParentType extends ResolversParentTypes['Contact'] = ResolversParentTypes['Contact']> = {
-  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  _id?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
+
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  saveContact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<MutationSaveContactArgs, 'contact'>>;
+};
+
+export interface ObjectIdScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['ObjectID'], any> {
+  name: 'ObjectID';
+}
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   getContact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<QueryGetContactArgs, 'id'>>;
   getContacts?: Resolver<Array<ResolversTypes['Contact']>, ParentType, ContextType>;
   getTelemetries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Telemetry']>>>, ParentType, ContextType, RequireFields<QueryGetTelemetriesArgs, 'filter'>>;
-  saveContact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<QuerySaveContactArgs, 'contact'>>;
 };
 
 export type TelemetryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Telemetry'] = ResolversParentTypes['Telemetry']> = {
@@ -223,6 +252,9 @@ export type TelemetryResolvers<ContextType = any, ParentType extends ResolversPa
 
 export type Resolvers<ContextType = any> = {
   Contact?: ContactResolvers<ContextType>;
+  DateTime?: GraphQLScalarType;
+  Mutation?: MutationResolvers<ContextType>;
+  ObjectID?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
   Telemetry?: TelemetryResolvers<ContextType>;
 };

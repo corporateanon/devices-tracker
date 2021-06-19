@@ -1,23 +1,27 @@
-import { ApolloServer, AuthenticationError } from 'apollo-server-micro';
-import { getSession } from 'next-auth/client';
-import { ApplicationContext } from '../../lib/api/applicationContext';
+import { ApolloServer } from 'apollo-server-micro';
+import { createApplicationContext } from '../../lib/api/applicationContext';
 import { contactResolvers } from '../../lib/api/resolvers/contactResolvers';
 import { telemetryResolvers } from '../../lib/api/resolvers/telemetryResolvers';
 import { contactSchema } from '../../lib/api/schemas/contactSchema';
 import { telemetrySchema } from '../../lib/api/schemas/telemetrySchema';
+import {
+    typeDefs as scalarsTypeDefs,
+    resolvers as scalarsResolvers,
+} from 'graphql-scalars';
+import { commonSchema } from '../../lib/api/schemas/commonSchema';
+import { DocumentNode } from 'graphql';
 
 const apolloServer = new ApolloServer({
-    typeDefs: [contactSchema, telemetrySchema],
-    resolvers: [contactResolvers, telemetryResolvers],
-    async context({ req }): Promise<ApplicationContext> {
-        const session = await getSession({ req });
-        if (!session) {
-            throw new AuthenticationError('Unauthorized');
-        }
-        return {
-            session,
-        };
-    },
+    typeDefs: [commonSchema, contactSchema, telemetrySchema],
+    resolvers: [
+        contactResolvers,
+        telemetryResolvers,
+        {
+            DateTime: scalarsResolvers.DateTime,
+            ObjectID: scalarsResolvers.ObjectID,
+        },
+    ],
+    context: createApplicationContext,
 });
 
 export const config = {

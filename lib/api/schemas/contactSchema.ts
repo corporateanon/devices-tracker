@@ -2,8 +2,8 @@ import { gql } from 'apollo-server-micro';
 
 export const contactSchema = gql`
     type Contact {
-        _id: ID!
-        updatedAt: String!
+        _id: ObjectID!
+        updatedAt: DateTime!
         name: String!
         phone: String
     }
@@ -14,9 +14,11 @@ export const contactSchema = gql`
         phone: String
     }
 
+    extend type Mutation {
+        saveContact(contact: ContactInput!): Contact
+    }
 
     extend type Query {
-        saveContact(contact: ContactInput!): Contact
         getContacts: [Contact!]!
         getContact(id: ID!): Contact
     }

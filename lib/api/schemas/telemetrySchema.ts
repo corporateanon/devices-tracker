@@ -28,7 +28,7 @@ export const telemetrySchema = gql`
         online: YesNo
     }
 
-    type Query {
+    extend type Query {
         getTelemetries(filter: TelemetryFilter!): [Telemetry]
     }
 `;
