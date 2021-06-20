@@ -10,11 +10,15 @@ const TelemetryRowEditor: FC<EditorProps<Telemetry>> = ({
     onClose,
 }) => {
     const { push } = useRouter();
-    useEffect(() => {
-        onClose();
-        const id = btoa(row.id);
-        push(`/t/${id}`);
-    }, []);
+    useEffect(
+        () => {
+            onClose();
+            const id = btoa(row.id);
+            push(`/t/${id}`);
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        []
+    );
     return null;
 };
 

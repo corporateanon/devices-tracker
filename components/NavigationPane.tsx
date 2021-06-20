@@ -13,7 +13,7 @@ export const NavigationPane: FC = () => {
     const handleFiltersChange = useCallback((value: TelemetryFilter) => {
         const q = { ...query, ...filtersToQuery(value) };
         replace(`?${qs.stringify(q)}`);
-    }, []);
+    }, [query, replace]);
     return (
         <Grid container direction="row" alignItems="flex-start">
             <Grid item xs>

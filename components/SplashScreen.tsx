@@ -1,8 +1,7 @@
 import { Button, Grid, makeStyles, Paper } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
-import { signIn } from 'next-auth/client';
+import { signIn, useSession } from 'next-auth/client';
 import { FC } from 'react';
-import { useSessionContext } from '../lib/sessionContext';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const SplashScreen: FC = () => {
+export const SplashScreen: FC = ({ children }) => {
     const classes = useStyles();
-    const [session, loading] = useSessionContext();
+    const [session, loading] = useSession();
 
     let content = (
         <Button onClick={() => signIn('google')}>Вход в систему</Button>
@@ -30,7 +29,7 @@ export const SplashScreen: FC = () => {
         content = <Typography variant="body1">Загрузка</Typography>;
     }
     if (session) {
-        content = <Typography variant="body1">Перенаправление</Typography>;
+        return children;
     }
 
     return (

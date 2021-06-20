@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import CommonPage from '../../components/CommonPage';
 import { useGetTelemetryQuery } from '../../lib/generated/graphql';
 
 function getId(query: object) {
@@ -14,9 +13,6 @@ function getId(query: object) {
 const TelemetryPage: React.FC = () => {
     const { query } = useRouter();
     const id = getId(query);
-    if (!id) {
-        return <div>huy</div>;
-    }
     const { data, error, loading } = useGetTelemetryQuery({
         variables: { id },
     });
@@ -26,8 +22,4 @@ const TelemetryPage: React.FC = () => {
     return <div>{JSON.stringify(data)}</div>;
 };
 
-export default () => (
-    <CommonPage>
-        <TelemetryPage />
-    </CommonPage>
-);
+export default TelemetryPage;
