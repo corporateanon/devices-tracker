@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import React, { FC } from 'react';
-import { ApplicationBar, ApplicationBarProps } from './AppBar';
+import { ApplicationBar, ApplicationBarProps } from './ApplicationBar';
 
 const useStyles = makeStyles(
     (theme) => ({
