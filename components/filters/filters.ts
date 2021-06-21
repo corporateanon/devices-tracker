@@ -11,10 +11,15 @@ interface Query {
 }
 
 export function filtersToQuery(filters: TelemetryFilter): Query {
-    const q: Query = {};
+    const q: Query = {
+        [QueryParams.Battery]: null,
+        [QueryParams.Level]: null,
+        [QueryParams.Online]: null,
+    };
     if (filters.battery !== null) {
         q[QueryParams.Battery] = filters.battery;
     }
+
     if (filters.level !== null) {
         q[QueryParams.Level] = filters.level;
     }

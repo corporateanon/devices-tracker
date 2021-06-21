@@ -1,33 +1,32 @@
-import { Grid } from '@material-ui/core';
-import { EventEmitter } from 'events';
-import { FC, useCallback, useEffect } from 'react';
-import SplitterLayout from 'react-splitter-layout';
-import 'react-splitter-layout/lib/index.css';
-import { EventEmitterContext } from '../hooks/useEventEmitter';
-import { ListView } from './ListView';
-import { MapView } from './MapView';
-import { NavigationPane } from './NavigationPane';
-import classes from './Dashboard.module.css';
-import { useSession } from 'next-auth/client';
+import { Grid, Hidden, makeStyles } from '@material-ui/core';
+import dynamic from 'next/dynamic';
+import { FC } from 'react';
+import { ApplicationLayout } from './ApplicationLayout';
+import { TelemetriesListView } from './TelemetriesListView';
+
+const DynamicMapView = dynamic(
+    () => import('./TelemetriesMapView').then((m) => m.TelemetriesMapView),
+    { ssr: false }
+);
+const useStyles = makeStyles((theme) => ({
+    root: { height: '100%' },
+}));
 
 export const Dashboard: FC = () => {
-    const events = new EventEmitter();
-
-    const handleResize = useCallback(() => events.emit('resize'), []);
-    useEffect(() => {
-        setTimeout(() => events.emit('resize'), 300);
-    }, []);
+    const classes = useStyles();
 
     return (
-        <Grid container className={classes.root}>
-            <Grid item>
-                <SplitterLayout onDragEnd={handleResize}>
-                    <ListView />
-                    <EventEmitterContext.Provider value={events}>
-                        <MapView />
-                    </EventEmitterContext.Provider>
-                </SplitterLayout>
+        <ApplicationLayout currentTab="devices">
+            <Grid container className={classes.root} direction="row">
+                <Grid item xs={12} sm={6}>
+                    <TelemetriesListView />
+                </Grid>
+                <Hidden only="xs">
+                    <Grid item sm={6}>
+                        <DynamicMapView />
+                    </Grid>
+                </Hidden>
             </Grid>
-        </Grid>
+        </ApplicationLayout>
     );
 };

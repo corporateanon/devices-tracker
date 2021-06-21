@@ -12,6 +12,15 @@ import { ApplicationContext } from '../applicationContext';
 
 export const telemetryResolvers: Resolvers<ApplicationContext> = {
     Query: {
+        async getTelemetry(_, { ID }) {
+            const doc = await Telemetry.findById(ID).lean();
+            //TODO: remove this mess
+            return {
+                ...doc,
+                id: doc._id,
+                updatedAt: doc.updatedAt.toString(),
+            };
+        },
         async getTelemetries(_, { filter }) {
             let query = Telemetry.find();
             if (filter.battery === HighLow.Low) {
@@ -47,6 +56,7 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
 
             const data = await query.exec();
 
+            //TODO: remove this mess
             return data.map((tel) => ({
                 lat: tel.lat,
                 lng: tel.lng,

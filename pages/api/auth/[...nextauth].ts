@@ -1,9 +1,13 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 
-const AUTHORIZED_EMAILS = process.env.AUTHORIZED_EMAILS.split(/[,\s\n]+/);
+const AUTHORIZED_EMAILS = (process.env.AUTHORIZED_EMAILS ?? '').split(
+    /[,\s\n]+/
+);
+const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 export default NextAuth({
+    secret: NEXTAUTH_SECRET,
     providers: [
         Providers.Google({
             clientId: process.env.GOOGLE_CLIENT_ID,

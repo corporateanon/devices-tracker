@@ -1,0 +1,54 @@
+type Contact {
+  _id: ObjectID!
+  updatedAt: DateTime!
+  name: String!
+  phone: String
+}
+
+input ContactInput {
+  _id: ID
+  name: String!
+  phone: String
+}
+
+scalar DateTime
+
+enum HighLow {
+  LOW
+  HIGH
+}
+
+type Mutation {
+  _: Boolean
+  saveContact(contact: ContactInput!): Contact
+}
+
+scalar ObjectID
+
+type Query {
+  _: Boolean
+  getContact(id: ID!): Contact
+  getContacts: [Contact!]!
+  getTelemetries(filter: TelemetryFilter!): [Telemetry]
+  getTelemetry(ID: ID!): Telemetry
+}
+
+type Telemetry {
+  id: ID!
+  lat: Float!
+  lng: Float!
+  level: Float!
+  battery: Float!
+  updatedAt: String!
+}
+
+input TelemetryFilter {
+  level: HighLow
+  battery: HighLow
+  online: YesNo
+}
+
+enum YesNo {
+  YES
+  NO
+}
