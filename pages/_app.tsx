@@ -3,7 +3,6 @@ import { NoSsr } from '@material-ui/core';
 import { getSession, Provider as NextAuthProvider } from 'next-auth/client';
 import Head from 'next/head';
 import React from 'react';
-import { AppBar, ApplicationBar } from '../components/ApplicationBar';
 import { SplashScreen } from '../components/SplashScreen';
 import '../css/reset.css';
 

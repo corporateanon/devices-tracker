@@ -29,7 +29,7 @@ export const SplashScreen: FC = ({ children }) => {
         content = <Typography variant="body1">Загрузка</Typography>;
     }
     if (session) {
-        return children;
+        return <>{children}</>;
     }
 
     return (
