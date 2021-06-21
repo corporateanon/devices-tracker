@@ -13,18 +13,20 @@ const useStyles = makeStyles(
 );
 
 interface ApplicationLayoutProps {
-    currentTab: ApplicationBarProps['currentTab'];
+    currentTab?: ApplicationBarProps['currentTab'];
+    title?: ApplicationBarProps['title'];
 }
 
 export const ApplicationLayout: FC<ApplicationLayoutProps> = ({
     children,
     currentTab,
+    title,
 }) => {
     const classes = useStyles();
     return (
         <Grid container direction="column" className={classes.root}>
             <Grid item>
-                <ApplicationBar currentTab={currentTab} />
+                <ApplicationBar title={title} currentTab={currentTab} />
             </Grid>
             <Grid item xs>
                 {children}
