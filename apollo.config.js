@@ -1,8 +1,8 @@
 module.exports = {
     client: {
-        includes: ['./lib/**/*.ts', './lib/**/*.tsx'],
+        includes: ['./lib/api/**/*.ts', './lib/api/**/*.tsx'],
         service: {
-            name: 'asd',
+            name: 'mainSchema',
             localSchemaFile: './lib/generated/schema.graphql',
         },
     },

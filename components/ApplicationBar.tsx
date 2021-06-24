@@ -1,12 +1,12 @@
 import { Tabs } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import Tab from '@material-ui/core/Tab';
 import Toolbar from '@material-ui/core/Toolbar';
-import React, { FC } from 'react';
-import { UserMenu } from './UserMenu';
-import Link from 'next/link';
 import Typography from '@material-ui/core/Typography';
+import React, { FC } from 'react';
+import NextRouterTab from './NextRouterTab';
+import { UserMenu } from './UserMenu';
 
 export interface ApplicationBarProps {
     title?: string;
@@ -26,16 +26,18 @@ export const ApplicationBar: FC<ApplicationBarProps> = ({
                     </Grid>
                     <Grid item xs>
                         <Tabs value={currentTab}>
-                            <Link href={`/`} passHref>
-                                <Tab label="Устройства" value="devices" />
-                            </Link>
-                            <Link href={`/c`} passHref>
-                                <Tab label="Контакты" value="contacts" />
-                            </Link>
+                            <NextRouterTab href="/" value="devices">
+                                Устройства
+                            </NextRouterTab>
+                            <NextRouterTab href="/c" value="contacts">
+                                Контакты
+                            </NextRouterTab>
                         </Tabs>
                     </Grid>
                     <Grid item>
-                        <UserMenu />
+                        <Box height="100%" display="flex" alignItems="center">
+                            <UserMenu />
+                        </Box>
                     </Grid>
                 </Grid>
             </Toolbar>

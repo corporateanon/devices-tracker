@@ -1,8 +1,12 @@
-import { Avatar, Chip, MenuItem, Menu } from '@material-ui/core';
 import { useCallback } from 'react';
 import { useState } from 'react';
 import { FC } from 'react';
 import { signOut, useSession } from 'next-auth/client';
+import React from 'react';
+import Chip from '@material-ui/core/Chip';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Avatar from '@material-ui/core/Avatar';
 
 export const UserMenu: FC = () => {
     const [session, loading] = useSession();
@@ -30,19 +34,18 @@ export const UserMenu: FC = () => {
 
     return (
         <>
-            <div onClick={handleOpen}>
-                <Chip
-                    avatar={
-                        avatarURL ? <Avatar src={avatarURL}></Avatar> : null
-                    }
-                    label={label}
-                />
-            </div>
+            <Chip
+                onClick={handleOpen}
+                avatar={avatarURL ? <Avatar src={avatarURL}></Avatar> : null}
+                label={label}
+            />
             <Menu
                 open={!!menuAnchor}
                 anchorEl={menuAnchor}
                 onClose={handleClose}
             >
+                <MenuItem disabled>{label}</MenuItem>
+                <MenuItem divider />
                 <MenuItem onClick={handleSignOut}>Выход</MenuItem>
             </Menu>
         </>

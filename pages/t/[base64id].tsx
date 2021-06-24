@@ -33,33 +33,32 @@ const TelemetryPage: React.FC = () => {
     const { data, error, loading } = useGetTelemetryQuery({
         variables: { id },
     });
-    if (!data) {
-        return null;
-    }
-    const item = data.getTelemetry;
+    const item = data?.getTelemetry;
     return (
-        <ApplicationLayout title={`${item.id}`}>
-            <Grid container direction="column">
-                <Row k="ID" v={item.id} />
-                <Row
-                    k="Батарея"
-                    v={
-                        <>
-                            <progress value={item.battery} max={1} />{' '}
-                            {percentFormatter.format(item.battery)}
-                        </>
-                    }
-                />
-                <Row
-                    k="Уровень"
-                    v={
-                        <>
-                            <progress value={item.level} max={1} />{' '}
-                            {percentFormatter.format(item.level)}
-                        </>
-                    }
-                />
-            </Grid>
+        <ApplicationLayout title={item?.id ?? null}>
+            {data ? (
+                <Grid container direction="column">
+                    <Row k="ID" v={item.id} />
+                    <Row
+                        k="Батарея"
+                        v={
+                            <>
+                                <progress value={item.battery} max={1} />{' '}
+                                {percentFormatter.format(item.battery)}
+                            </>
+                        }
+                    />
+                    <Row
+                        k="Уровень"
+                        v={
+                            <>
+                                <progress value={item.level} max={1} />{' '}
+                                {percentFormatter.format(item.level)}
+                            </>
+                        }
+                    />
+                </Grid>
+            ) : null}
         </ApplicationLayout>
     );
 };
