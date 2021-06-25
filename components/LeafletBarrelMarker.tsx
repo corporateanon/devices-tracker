@@ -5,6 +5,7 @@ import { Marker, Popup } from 'react-leaflet';
 import { Telemetry } from '../lib/generated/graphql';
 import { isBatteryLow, isOffline } from '../lib/telemetryUtils';
 import { BarrelMarker } from './BarrelMarker';
+import { TelemetryCard } from './TelemetryCard';
 
 export const LeafletBarrelMarker: FC<{ telemetry: Telemetry }> = ({
     telemetry,
@@ -30,12 +31,7 @@ export const LeafletBarrelMarker: FC<{ telemetry: Telemetry }> = ({
             icon={icon}
         >
             <Popup>
-                <p>
-                    <b>Уровень:</b> <span>{telemetry.level}</span>
-                </p>
-                <p>
-                    <b>Батарея:</b> <span>{telemetry.battery}</span>
-                </p>
+                <TelemetryCard item={telemetry} />
             </Popup>
         </Marker>
     );
