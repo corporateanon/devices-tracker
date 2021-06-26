@@ -5,18 +5,21 @@ import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import React, { FC } from 'react';
+import { useMobile } from '../lib/useMobile';
 import NextRouterTab from './NextRouterTab';
 import { UserMenu } from './UserMenu';
 
 export interface ApplicationBarProps {
     title?: string;
-    currentTab?: 'devices' | 'contacts';
+    currentTab?: 'devices' | 'contacts' | 'map';
 }
 
 export const ApplicationBar: FC<ApplicationBarProps> = ({
     title,
     currentTab,
 }) => {
+    const isMobile = useMobile();
+
     return (
         <AppBar position="static">
             <Toolbar>
@@ -29,6 +32,11 @@ export const ApplicationBar: FC<ApplicationBarProps> = ({
                             <NextRouterTab href="/" value="devices">
                                 Устройства
                             </NextRouterTab>
+                            {isMobile && (
+                                <NextRouterTab href="/m" value="map">
+                                    Карта
+                                </NextRouterTab>
+                            )}
                             <NextRouterTab href="/c" value="contacts">
                                 Контакты
                             </NextRouterTab>

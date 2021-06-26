@@ -1,6 +1,7 @@
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid/Grid';
-import Typography from '@material-ui/core/Typography';
+import MUILink from '@material-ui/core/Link';
+import Link from 'next/link';
 import React, { FC, ReactNode } from 'react';
 import { percentFormatter } from '../lib/formatters';
 import { Telemetry } from '../lib/generated/graphql';
@@ -25,7 +26,14 @@ const Progress: FC<{ value: number }> = ({ value }) => {
 export const TelemetryCard: React.FC<{ item: Telemetry }> = ({ item }) => {
     return (
         <Grid container direction="column">
-            <Row k="ID устройства" v={item.deviceId} />
+            <Row
+                k="ID устройства"
+                v={
+                    <Link href={`/t/${item.id}`} passHref>
+                        <MUILink>{item.deviceId}</MUILink>
+                    </Link>
+                }
+            />
             <Row k="Батарея" v={<Progress value={item.battery} />} />
             <Row k="Уровень" v={<Progress value={item.level} />} />
         </Grid>
