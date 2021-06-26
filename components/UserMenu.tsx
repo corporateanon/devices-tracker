@@ -7,8 +7,10 @@ import Chip from '@material-ui/core/Chip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
+import { useMobile } from '../lib/useMobile';
 
 export const UserMenu: FC = () => {
+    const isMobile = useMobile();
     const [session, loading] = useSession();
     const [menuAnchor, setMenuAnchor] = useState<HTMLElement>(null);
 
@@ -34,11 +36,17 @@ export const UserMenu: FC = () => {
 
     return (
         <>
-            <Chip
-                onClick={handleOpen}
-                avatar={avatarURL ? <Avatar src={avatarURL}></Avatar> : null}
-                label={label}
-            />
+            {isMobile ? (
+                <Avatar onClick={handleOpen} src={avatarURL}></Avatar>
+            ) : (
+                <Chip
+                    onClick={handleOpen}
+                    avatar={
+                        avatarURL ? <Avatar src={avatarURL}></Avatar> : null
+                    }
+                    label={label}
+                />
+            )}
             <Menu
                 open={!!menuAnchor}
                 anchorEl={menuAnchor}
