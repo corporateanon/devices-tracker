@@ -1,7 +1,7 @@
 import mongoose, { Model } from 'mongoose';
 
 interface ITelemetry {
-    _id: string;
+    deviceId: string;
     lat: number;
     lng: number;
     level: number;
@@ -10,7 +10,7 @@ interface ITelemetry {
 }
 
 export const TelemetrySchema = new mongoose.Schema({
-    _id: { required: true, type: String },
+    deviceId: { required: true, type: String, unique: true },
     lat: { required: true, type: Number },
     lng: { required: true, type: Number },
     level: { required: true, type: Number },

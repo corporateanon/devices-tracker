@@ -25,7 +25,7 @@ const Progress: FC<{ value: number }> = ({ value }) => {
 export const TelemetryCard: React.FC<{ item: Telemetry }> = ({ item }) => {
     return (
         <Grid container direction="column">
-            <Row k="ID" v={item.id} />
+            <Row k="ID устройства" v={item.deviceId} />
             <Row k="Батарея" v={<Progress value={item.battery} />} />
             <Row k="Уровень" v={<Progress value={item.level} />} />
         </Grid>

@@ -35,6 +35,7 @@ type Query {
 
 type Telemetry {
   id: ID!
+  deviceId: String!
   lat: Float!
   lng: Float!
   level: Float!

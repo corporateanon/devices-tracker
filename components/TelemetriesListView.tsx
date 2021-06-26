@@ -21,12 +21,12 @@ import MUILink from '@material-ui/core/Link';
 
 const columns: readonly Column<Telemetry>[] = [
     {
-        key: 'id',
-        name: 'ID',
+        key: 'deviceId',
+        name: 'ID устройства',
         editable: true,
         // eslint-disable-next-line react/display-name
         formatter: ({ row, column: { key } }) => (
-            <Link href={`/t/${btoa(row[key])}`} passHref>
+            <Link href={`/t/${row.id}`} passHref>
                 <MUILink>{row[key]}</MUILink>
             </Link>
         ),

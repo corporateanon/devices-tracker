@@ -77,6 +77,7 @@ export type QueryGetTelemetryArgs = {
 export type Telemetry = {
   __typename?: 'Telemetry';
   id: Scalars['ID'];
+  deviceId: Scalars['String'];
   lat: Scalars['Float'];
   lng: Scalars['Float'];
   level: Scalars['Float'];
@@ -104,7 +105,7 @@ export type GetTelemetriesQuery = (
   { __typename?: 'Query' }
   & { getTelemetries?: Maybe<Array<Maybe<(
     { __typename?: 'Telemetry' }
-    & Pick<Telemetry, 'id' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
+    & Pick<Telemetry, 'id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
   )>>> }
 );
 
@@ -117,7 +118,7 @@ export type GetTelemetryQuery = (
   { __typename?: 'Query' }
   & { getTelemetry?: Maybe<(
     { __typename?: 'Telemetry' }
-    & Pick<Telemetry, 'id' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
+    & Pick<Telemetry, 'id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
   )> }
 );
 
@@ -262,6 +263,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type TelemetryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Telemetry'] = ResolversParentTypes['Telemetry']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  deviceId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   lng?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
@@ -291,6 +293,7 @@ export const GetTelemetriesDocument = gql`
     query GetTelemetries($filter: TelemetryFilter!) {
   getTelemetries(filter: $filter) {
     id
+    deviceId
     lat
     lng
     level
@@ -331,6 +334,7 @@ export const GetTelemetryDocument = gql`
     query GetTelemetry($id: ID!) {
   getTelemetry(ID: $id) {
     id
+    deviceId
     lat
     lng
     level

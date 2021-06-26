@@ -4,9 +4,9 @@
     "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["_id", "battery", "level", "lat", "lng"],
+        "required": ["deviceId", "battery", "level", "lat", "lng"],
         "properties": {
-            "_id": {
+            "deviceId": {
                 "type": "string"
             },
             "battery": {

@@ -12,7 +12,7 @@ const handler: NextApiHandler = async (req, res) => {
     const docs = [];
     for (const telemetryItem of telemetriesList) {
         const doc = await Telemetry.findOneAndUpdate(
-            { _id: `${telemetryItem._id}` },
+            { deviceId: `${telemetryItem.deviceId}` },
             {
                 ...telemetryItem,
                 updatedAt: Date.now(),

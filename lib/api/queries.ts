@@ -4,6 +4,7 @@ gql`
     query GetTelemetries($filter: TelemetryFilter!) {
         getTelemetries(filter: $filter) {
             id
+            deviceId
             lat
             lng
             level
@@ -15,6 +16,7 @@ gql`
     query GetTelemetry($id: ID!) {
         getTelemetry(ID: $id) {
             id
+            deviceId
             lat
             lng
             level

@@ -5,6 +5,7 @@ import { gql } from 'apollo-server-micro';
 export const telemetrySchema = gql`
     type Telemetry {
         id: ID!
+        deviceId: String!
         lat: Float!
         lng: Float!
         level: Float!

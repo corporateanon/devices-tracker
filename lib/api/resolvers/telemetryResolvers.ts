@@ -61,6 +61,7 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
                 lat: tel.lat,
                 lng: tel.lng,
                 id: tel._id,
+                deviceId: tel.deviceId,
                 level: tel.level,
                 battery: tel.battery,
                 updatedAt: moment(tel.updatedAt).toISOString(),

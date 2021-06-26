@@ -4,12 +4,8 @@ import { ApplicationLayout } from '../../components/ApplicationLayout';
 import { TelemetryCard } from '../../components/TelemetryCard';
 import { useGetTelemetryQuery } from '../../lib/generated/graphql';
 
-function getId(query: object) {
-    try {
-        return atob((query as any).base64id);
-    } catch (e) {
-        return null;
-    }
+function getId(query: any) {
+    return `${query.id}`;
 }
 
 const TelemetryPage: React.FC = () => {
