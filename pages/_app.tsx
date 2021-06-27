@@ -1,5 +1,7 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { NoSsr } from '@material-ui/core';
+import { CssBaseline, NoSsr } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { getSession, Provider as NextAuthProvider } from 'next-auth/client';
 import Head from 'next/head';
 import React from 'react';
@@ -12,6 +14,17 @@ const client = new ApolloClient({
 });
 
 export default function MyApp({ Component, pageProps }) {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    const theme = React.useMemo(
+        () =>
+            createMuiTheme({
+                palette: {
+                    type: prefersDarkMode ? 'dark' : 'light',
+                },
+            }),
+        [prefersDarkMode]
+    );
+
     return (
         <>
             <Head>
@@ -21,13 +34,16 @@ export default function MyApp({ Component, pageProps }) {
                 />
             </Head>
             <NoSsr>
-                <NextAuthProvider session={pageProps.session}>
-                    <SplashScreen>
-                        <ApolloProvider client={client}>
-                            <Component {...pageProps} />
-                        </ApolloProvider>
-                    </SplashScreen>
-                </NextAuthProvider>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <NextAuthProvider session={pageProps.session}>
+                        <SplashScreen>
+                            <ApolloProvider client={client}>
+                                <Component {...pageProps} />
+                            </ApolloProvider>
+                        </SplashScreen>
+                    </NextAuthProvider>
+                </ThemeProvider>
             </NoSsr>
         </>
     );
