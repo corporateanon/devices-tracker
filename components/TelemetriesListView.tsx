@@ -10,7 +10,6 @@ import classes from './ListView.module.css';
 import clsx from 'clsx';
 import { NavigationPane } from './NavigationPane';
 import { Grid, makeStyles } from '@material-ui/core';
-import TelemetryRowEditor from './TelemetryRowEditor';
 import {
     createColumnFormatter,
     dateColumnFormatter,
@@ -26,7 +25,7 @@ const columns: readonly Column<Telemetry>[] = [
         editable: true,
         // eslint-disable-next-line react/display-name
         formatter: ({ row, column: { key } }) => (
-            <Link href={`/t/${row.id}`} passHref>
+            <Link href={`/t/${row._id}`} passHref>
                 <MUILink>{row[key]}</MUILink>
             </Link>
         ),

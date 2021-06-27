@@ -29,7 +29,7 @@ export const TelemetryCard: React.FC<{ item: Telemetry }> = ({ item }) => {
             <Row
                 k="ID устройства"
                 v={
-                    <Link href={`/t/${item.id}`} passHref>
+                    <Link href={`/t/${item._id}`} passHref>
                         <MUILink>{item.deviceId}</MUILink>
                     </Link>
                 }

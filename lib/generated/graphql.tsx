@@ -71,18 +71,18 @@ export type QueryGetTelemetriesArgs = {
 
 
 export type QueryGetTelemetryArgs = {
-  ID: Scalars['ID'];
+  ID: Scalars['ObjectID'];
 };
 
 export type Telemetry = {
   __typename?: 'Telemetry';
-  id: Scalars['ID'];
+  _id: Scalars['ObjectID'];
   deviceId: Scalars['String'];
   lat: Scalars['Float'];
   lng: Scalars['Float'];
   level: Scalars['Float'];
   battery: Scalars['Float'];
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type TelemetryFilter = {
@@ -105,12 +105,12 @@ export type GetTelemetriesQuery = (
   { __typename?: 'Query' }
   & { getTelemetries?: Maybe<Array<Maybe<(
     { __typename?: 'Telemetry' }
-    & Pick<Telemetry, 'id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
+    & Pick<Telemetry, '_id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
   )>>> }
 );
 
 export type GetTelemetryQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ObjectID'];
 }>;
 
 
@@ -118,7 +118,7 @@ export type GetTelemetryQuery = (
   { __typename?: 'Query' }
   & { getTelemetry?: Maybe<(
     { __typename?: 'Telemetry' }
-    & Pick<Telemetry, 'id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
+    & Pick<Telemetry, '_id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
   )> }
 );
 
@@ -286,13 +286,13 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type TelemetryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Telemetry'] = ResolversParentTypes['Telemetry']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  _id?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
   deviceId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   lng?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   battery?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -316,7 +316,7 @@ export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 export const GetTelemetriesDocument = gql`
     query GetTelemetries($filter: TelemetryFilter!) {
   getTelemetries(filter: $filter) {
-    id
+    _id
     deviceId
     lat
     lng
@@ -355,9 +355,9 @@ export type GetTelemetriesQueryHookResult = ReturnType<typeof useGetTelemetriesQ
 export type GetTelemetriesLazyQueryHookResult = ReturnType<typeof useGetTelemetriesLazyQuery>;
 export type GetTelemetriesQueryResult = Apollo.QueryResult<GetTelemetriesQuery, GetTelemetriesQueryVariables>;
 export const GetTelemetryDocument = gql`
-    query GetTelemetry($id: ID!) {
+    query GetTelemetry($id: ObjectID!) {
   getTelemetry(ID: $id) {
-    id
+    _id
     deviceId
     lat
     lng

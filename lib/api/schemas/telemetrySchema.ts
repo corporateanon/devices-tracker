@@ -4,13 +4,13 @@ import { gql } from 'apollo-server-micro';
 
 export const telemetrySchema = gql`
     type Telemetry {
-        id: ID!
+        _id: ObjectID!
         deviceId: String!
         lat: Float!
         lng: Float!
         level: Float!
         battery: Float!
-        updatedAt: String!
+        updatedAt: DateTime!
     }
 
     enum YesNo {
@@ -31,6 +31,6 @@ export const telemetrySchema = gql`
 
     extend type Query {
         getTelemetries(filter: TelemetryFilter!): [Telemetry]
-        getTelemetry(ID: ID!): Telemetry
+        getTelemetry(ID: ObjectID!): Telemetry
     }
 `;

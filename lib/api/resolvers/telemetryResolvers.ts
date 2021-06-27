@@ -13,13 +13,7 @@ import { ApplicationContext } from '../applicationContext';
 export const telemetryResolvers: Resolvers<ApplicationContext> = {
     Query: {
         async getTelemetry(_, { ID }) {
-            const doc = await Telemetry.findById(ID).lean();
-            //TODO: remove this mess
-            return {
-                ...doc,
-                id: doc._id,
-                updatedAt: doc.updatedAt.toString(),
-            };
+            return await Telemetry.findById(ID).lean();
         },
 
         async getTelemetries(_, { filter }) {
@@ -51,7 +45,7 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
                 match.updatedAt = { $lte: timeThreshold.valueOf() };
             }
 
-            const aggregation = Telemetry.aggregate([
+            return await Telemetry.aggregate([
                 {
                     $match: match,
                 },
@@ -77,17 +71,7 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
                         score: 0,
                     },
                 },
-            ]);
-
-            return (await aggregation.exec()).map((tel) => ({
-                lat: tel.lat,
-                lng: tel.lng,
-                id: tel._id,
-                deviceId: tel.deviceId,
-                level: tel.level,
-                battery: tel.battery,
-                updatedAt: moment(tel.updatedAt).toISOString(),
-            }));
+            ]).exec();
         },
     },
 };

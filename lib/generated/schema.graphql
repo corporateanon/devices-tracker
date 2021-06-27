@@ -30,17 +30,17 @@ type Query {
   getContact(id: ID!): Contact
   getContacts: [Contact!]!
   getTelemetries(filter: TelemetryFilter!): [Telemetry]
-  getTelemetry(ID: ID!): Telemetry
+  getTelemetry(ID: ObjectID!): Telemetry
 }
 
 type Telemetry {
-  id: ID!
+  _id: ObjectID!
   deviceId: String!
   lat: Float!
   lng: Float!
   level: Float!
   battery: Float!
-  updatedAt: String!
+  updatedAt: DateTime!
 }
 
 input TelemetryFilter {

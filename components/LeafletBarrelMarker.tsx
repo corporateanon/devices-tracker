@@ -26,7 +26,7 @@ export const LeafletBarrelMarker: FC<{ telemetry: Telemetry }> = ({
 
     return (
         <Marker
-            key={telemetry.id}
+            key={telemetry._id}
             position={[telemetry.lat, telemetry.lng]}
             icon={icon}
         >

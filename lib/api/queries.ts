@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 gql`
     query GetTelemetries($filter: TelemetryFilter!) {
         getTelemetries(filter: $filter) {
-            id
+            _id
             deviceId
             lat
             lng
@@ -13,9 +13,9 @@ gql`
         }
     }
 
-    query GetTelemetry($id: ID!) {
+    query GetTelemetry($id: ObjectID!) {
         getTelemetry(ID: $id) {
-            id
+            _id
             deviceId
             lat
             lng

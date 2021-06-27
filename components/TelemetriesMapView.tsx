@@ -32,7 +32,7 @@ export const TelemetriesMapView: FC = () => {
                 {data &&
                     data.getTelemetries.map((telemetry) => (
                         <LeafletBarrelMarker
-                            key={telemetry.id}
+                            key={telemetry._id}
                             telemetry={telemetry}
                         />
                     ))}
