@@ -21,43 +21,65 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
                 updatedAt: doc.updatedAt.toString(),
             };
         },
+
         async getTelemetries(_, { filter }) {
-            let query = Telemetry.find();
+            const match: any = {};
             if (filter.battery === HighLow.Low) {
-                query = query
-                    .where('battery')
-                    .lte(BATTERY_LOW_FILTER_THRESHOLD);
+                match.battery = { $lte: BATTERY_LOW_FILTER_THRESHOLD };
             }
             if (filter.battery === HighLow.High) {
-                query = query
-                    .where('battery')
-                    .gte(BATTERY_HIGH_FILTER_THRESHOLD);
+                match.battery = { $gte: BATTERY_HIGH_FILTER_THRESHOLD };
             }
 
             if (filter.level === HighLow.Low) {
-                query = query.where('level').lte(LEVEL_LOW_FILTER_THRESHOLD);
+                match.level = { $lte: LEVEL_LOW_FILTER_THRESHOLD };
             }
             if (filter.level === HighLow.High) {
-                query = query.where('level').gte(LEVEL_HIGH_FILTER_THRESHOLD);
+                match.level = { $gte: LEVEL_HIGH_FILTER_THRESHOLD };
             }
 
             if (filter.online === YesNo.Yes) {
                 const timeThreshold = new Date(
                     new Date().valueOf() - OFFLINE_FILTER_TIMEOUT
                 );
-                query = query.where('updatedAt').gt(timeThreshold.valueOf());
+                match.updatedAt = { $gt: timeThreshold.valueOf() };
             }
             if (filter.online === YesNo.No) {
                 const timeThreshold = new Date(
                     new Date().valueOf() - OFFLINE_FILTER_TIMEOUT
                 );
-                query = query.where('updatedAt').lte(timeThreshold.valueOf());
+                match.updatedAt = { $lte: timeThreshold.valueOf() };
             }
 
-            const data = await query.exec();
+            const aggregation = Telemetry.aggregate([
+                {
+                    $match: match,
+                },
+                {
+                    $addFields: {
+                        score: {
+                            $add: [
+                                '$level',
+                                {
+                                    $subtract: [1, '$battery'],
+                                },
+                            ],
+                        },
+                    },
+                },
+                {
+                    $sort: {
+                        score: -1,
+                    },
+                },
+                {
+                    $project: {
+                        score: 0,
+                    },
+                },
+            ]);
 
-            //TODO: remove this mess
-            return data.map((tel) => ({
+            return (await aggregation.exec()).map((tel) => ({
                 lat: tel.lat,
                 lng: tel.lng,
                 id: tel._id,
