@@ -28,7 +28,7 @@ export type Contact = {
 
 export type ContactInput = {
   _id?: Maybe<Scalars['ID']>;
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
 };
 
@@ -119,6 +119,30 @@ export type GetTelemetryQuery = (
   & { getTelemetry?: Maybe<(
     { __typename?: 'Telemetry' }
     & Pick<Telemetry, 'id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
+  )> }
+);
+
+export type GetContactsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetContactsQuery = (
+  { __typename?: 'Query' }
+  & { getContacts: Array<(
+    { __typename?: 'Contact' }
+    & Pick<Contact, '_id' | 'name' | 'phone' | 'updatedAt'>
+  )> }
+);
+
+export type SaveContactMutationVariables = Exact<{
+  contact: ContactInput;
+}>;
+
+
+export type SaveContactMutation = (
+  { __typename?: 'Mutation' }
+  & { saveContact?: Maybe<(
+    { __typename?: 'Contact' }
+    & Pick<Contact, '_id' | 'name' | 'phone' | 'updatedAt'>
   )> }
 );
 
@@ -371,3 +395,76 @@ export function useGetTelemetryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetTelemetryQueryHookResult = ReturnType<typeof useGetTelemetryQuery>;
 export type GetTelemetryLazyQueryHookResult = ReturnType<typeof useGetTelemetryLazyQuery>;
 export type GetTelemetryQueryResult = Apollo.QueryResult<GetTelemetryQuery, GetTelemetryQueryVariables>;
+export const GetContactsDocument = gql`
+    query GetContacts {
+  getContacts {
+    _id
+    name
+    phone
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useGetContactsQuery__
+ *
+ * To run a query within a React component, call `useGetContactsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContactsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContactsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetContactsQuery(baseOptions?: Apollo.QueryHookOptions<GetContactsQuery, GetContactsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetContactsQuery, GetContactsQueryVariables>(GetContactsDocument, options);
+      }
+export function useGetContactsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContactsQuery, GetContactsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetContactsQuery, GetContactsQueryVariables>(GetContactsDocument, options);
+        }
+export type GetContactsQueryHookResult = ReturnType<typeof useGetContactsQuery>;
+export type GetContactsLazyQueryHookResult = ReturnType<typeof useGetContactsLazyQuery>;
+export type GetContactsQueryResult = Apollo.QueryResult<GetContactsQuery, GetContactsQueryVariables>;
+export const SaveContactDocument = gql`
+    mutation SaveContact($contact: ContactInput!) {
+  saveContact(contact: $contact) {
+    _id
+    name
+    phone
+    updatedAt
+  }
+}
+    `;
+export type SaveContactMutationFn = Apollo.MutationFunction<SaveContactMutation, SaveContactMutationVariables>;
+
+/**
+ * __useSaveContactMutation__
+ *
+ * To run a mutation, you first call `useSaveContactMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSaveContactMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [saveContactMutation, { data, loading, error }] = useSaveContactMutation({
+ *   variables: {
+ *      contact: // value for 'contact'
+ *   },
+ * });
+ */
+export function useSaveContactMutation(baseOptions?: Apollo.MutationHookOptions<SaveContactMutation, SaveContactMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SaveContactMutation, SaveContactMutationVariables>(SaveContactDocument, options);
+      }
+export type SaveContactMutationHookResult = ReturnType<typeof useSaveContactMutation>;
+export type SaveContactMutationResult = Apollo.MutationResult<SaveContactMutation>;
+export type SaveContactMutationOptions = Apollo.BaseMutationOptions<SaveContactMutation, SaveContactMutationVariables>;

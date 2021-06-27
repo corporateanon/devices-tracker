@@ -10,7 +10,7 @@ export const contactSchema = gql`
 
     input ContactInput {
         _id: ID
-        name: String!
+        name: String
         phone: String
     }
 

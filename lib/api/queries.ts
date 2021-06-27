@@ -24,4 +24,22 @@ gql`
             updatedAt
         }
     }
+
+    query GetContacts {
+        getContacts {
+            _id
+            name
+            phone
+            updatedAt
+        }
+    }
+
+    mutation SaveContact($contact: ContactInput!) {
+        saveContact(contact: $contact) {
+            _id
+            name
+            phone
+            updatedAt
+        }
+    }
 `;

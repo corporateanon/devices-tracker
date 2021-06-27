@@ -9,7 +9,7 @@ export interface IContact {
 
 export const ContactSchema = new mongoose.Schema({
     name: { required: true, type: String },
-    phone: { required: true, type: String },
+    phone: { type: String },
     updatedAt: { required: true, type: Date },
 });
 

@@ -16,7 +16,7 @@ const TelemetryPage: React.FC = () => {
     });
     const item = data?.getTelemetry;
     return (
-        <ApplicationLayout title={item?.id ?? null}>
+        <ApplicationLayout title={item?.deviceId ?? null}>
             {data ? <TelemetryCard item={item} /> : null}
         </ApplicationLayout>
     );

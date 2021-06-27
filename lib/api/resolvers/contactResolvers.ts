@@ -23,6 +23,7 @@ export const contactResolvers: Resolvers<ApplicationContext> = {
                 const doc = new Contact({
                     ...contactInput,
                     updatedAt: new Date(),
+                    _id: undefined,
                 });
                 await doc.save();
                 return doc;
