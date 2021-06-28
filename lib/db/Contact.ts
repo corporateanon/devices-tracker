@@ -5,12 +5,14 @@ export interface IContact {
     updatedAt: Date;
     name: string;
     phone?: string;
+    archived?: boolean;
 }
 
 export const ContactSchema = new mongoose.Schema({
     name: { required: true, type: String },
     phone: { type: String },
     updatedAt: { required: true, type: Date },
+    archived: { type: Boolean, index: true },
 });
 
 const Contact: Model<IContact> =

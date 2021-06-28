@@ -6,6 +6,11 @@ export const contactSchema = gql`
         updatedAt: DateTime!
         name: String!
         phone: String
+        archived: Boolean
+    }
+
+    input ContactFilter {
+        archived: Boolean
     }
 
     input ContactInput {
@@ -19,7 +24,7 @@ export const contactSchema = gql`
     }
 
     extend type Query {
-        getContacts: [Contact!]!
+        getContacts(filter: ContactFilter): [Contact!]!
         getContact(id: ID!): Contact
     }
 `;

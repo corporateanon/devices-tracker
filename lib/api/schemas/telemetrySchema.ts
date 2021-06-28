@@ -23,10 +23,21 @@ export const telemetrySchema = gql`
         HIGH
     }
 
+    enum TelemetrySort {
+        URGENT
+        NEWEST
+        OLDEST
+        BATTERY_LOW
+        BATTERY_HIGH
+        LEVEL_LOW
+        LEVEL_HIGH
+    }
+
     input TelemetryFilter {
         level: HighLow
         battery: HighLow
         online: YesNo
+        sort: TelemetrySort
     }
 
     extend type Query {

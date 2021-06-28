@@ -13,9 +13,9 @@ export const TelemetrySchema = new mongoose.Schema({
     deviceId: { required: true, type: String, unique: true },
     lat: { required: true, type: Number },
     lng: { required: true, type: Number },
-    level: { required: true, type: Number },
-    battery: { required: true, type: Number },
-    updatedAt: { required: true, type: Date },
+    level: { required: true, type: Number, index: true },
+    battery: { required: true, type: Number, index: true },
+    updatedAt: { required: true, type: Date, index: true },
 });
 
 const Telemetry: Model<ITelemetry> =

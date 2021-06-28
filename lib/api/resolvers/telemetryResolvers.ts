@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {
     BATTERY_HIGH_FILTER_THRESHOLD,
     BATTERY_LOW_FILTER_THRESHOLD,
@@ -7,7 +6,12 @@ import {
     OFFLINE_FILTER_TIMEOUT,
 } from '../../constants';
 import { Telemetry } from '../../db/models';
-import { HighLow, Resolvers, YesNo } from '../../generated/graphql';
+import {
+    HighLow,
+    Resolvers,
+    TelemetrySort,
+    YesNo,
+} from '../../generated/graphql';
 import { ApplicationContext } from '../applicationContext';
 
 export const telemetryResolvers: Resolvers<ApplicationContext> = {
@@ -36,14 +40,25 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
                 const timeThreshold = new Date(
                     new Date().valueOf() - OFFLINE_FILTER_TIMEOUT
                 );
-                match.updatedAt = { $gt: timeThreshold.valueOf() };
+                match.updatedAt = { $gt: new Date(timeThreshold.valueOf()) };
             }
             if (filter.online === YesNo.No) {
                 const timeThreshold = new Date(
                     new Date().valueOf() - OFFLINE_FILTER_TIMEOUT
                 );
-                match.updatedAt = { $lte: timeThreshold.valueOf() };
+                match.updatedAt = { $lte: new Date(timeThreshold.valueOf()) };
             }
+
+            const sort =
+                {
+                    [TelemetrySort.BatteryHigh]: { battery: -1 },
+                    [TelemetrySort.BatteryLow]: { battery: 1 },
+                    [TelemetrySort.LevelHigh]: { level: -1 },
+                    [TelemetrySort.LevelLow]: { level: 1 },
+                    [TelemetrySort.Newest]: { updatedAt: -1 },
+                    [TelemetrySort.Oldest]: { updatedAt: 1 },
+                    [TelemetrySort.Urgent]: { score: -1 },
+                }[filter.sort] ?? {};
 
             return await Telemetry.aggregate([
                 {
@@ -62,9 +77,7 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
                     },
                 },
                 {
-                    $sort: {
-                        score: -1,
-                    },
+                    $sort: sort,
                 },
                 {
                     $project: {

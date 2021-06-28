@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import { useEventEmitter } from '../hooks/useEventEmitter';
 import { useGetTelemetriesQuery } from '../lib/generated/graphql';
-import { queryToFilters } from './filters/filters';
+import { queryToTelemetryFilters } from './filters/telemetryFilters';
 import { LeafletBarrelMarker } from './LeafletBarrelMarker';
 
 export const TelemetriesMapView: FC = () => {
@@ -12,7 +12,7 @@ export const TelemetriesMapView: FC = () => {
         pollInterval: 60000,
         ssr: false,
         variables: {
-            filter: queryToFilters(query),
+            filter: queryToTelemetryFilters(query),
         },
     });
 

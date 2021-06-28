@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import ReactDataGrid, { Column } from 'react-data-grid';
 import { Telemetry, useGetTelemetriesQuery } from '../lib/generated/graphql';
 import { isBatteryLow, isLevelHigh, isOffline } from '../lib/telemetryUtils';
-import { queryToFilters } from './filters/filters';
+import { queryToTelemetryFilters } from './filters/telemetryFilters';
 import classes from './ListView.module.css';
 import clsx from 'clsx';
 import { NavigationPane } from './NavigationPane';
@@ -78,7 +78,7 @@ export function TelemetriesListView() {
         pollInterval: 60000,
         ssr: false,
         variables: {
-            filter: queryToFilters(query),
+            filter: queryToTelemetryFilters(query),
         },
     });
 

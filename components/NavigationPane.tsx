@@ -3,15 +3,15 @@ import { useRouter } from 'next/router';
 import qs from 'querystring';
 import { FC, useCallback } from 'react';
 import { TelemetryFilter } from '../lib/generated/graphql';
-import { filtersToQuery, queryToFilters } from './filters/filters';
-import { TrackersFilter } from './TrackersFilter';
+import { telemetryFiltersToQuery, queryToTelemetryFilters } from './filters/telemetryFilters';
+import { TelemetryFilterView } from './TelemetryFilterView';
 
 export const NavigationPane: FC = () => {
     const { query, replace } = useRouter();
-    const filters = queryToFilters(query);
+    const filters = queryToTelemetryFilters(query);
     const handleFiltersChange = useCallback(
         (value: TelemetryFilter) => {
-            const q = { ...query, ...filtersToQuery(value) };
+            const q = { ...query, ...telemetryFiltersToQuery(value) };
             replace(`?${qs.stringify(q)}`);
         },
         [query, replace]
@@ -19,7 +19,7 @@ export const NavigationPane: FC = () => {
     return (
         <Grid container direction="row" alignItems="flex-start">
             <Grid item xs>
-                <TrackersFilter
+                <TelemetryFilterView
                     value={filters}
                     onChange={handleFiltersChange}
                 />

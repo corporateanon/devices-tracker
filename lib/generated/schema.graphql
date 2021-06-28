@@ -3,6 +3,11 @@ type Contact {
   updatedAt: DateTime!
   name: String!
   phone: String
+  archived: Boolean
+}
+
+input ContactFilter {
+  archived: Boolean
 }
 
 input ContactInput {
@@ -28,7 +33,7 @@ scalar ObjectID
 type Query {
   _: Boolean
   getContact(id: ID!): Contact
-  getContacts: [Contact!]!
+  getContacts(filter: ContactFilter): [Contact!]!
   getTelemetries(filter: TelemetryFilter!): [Telemetry]
   getTelemetry(ID: ObjectID!): Telemetry
 }
@@ -47,6 +52,17 @@ input TelemetryFilter {
   level: HighLow
   battery: HighLow
   online: YesNo
+  sort: TelemetrySort
+}
+
+enum TelemetrySort {
+  URGENT
+  NEWEST
+  OLDEST
+  BATTERY_LOW
+  BATTERY_HIGH
+  LEVEL_LOW
+  LEVEL_HIGH
 }
 
 enum YesNo {

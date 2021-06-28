@@ -1,5 +1,4 @@
 import { Grid, makeStyles, MenuItem, TextField } from '@material-ui/core';
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { ChangeEvent, FC } from 'react';
 import {
     BATTERY_HIGH_FILTER_THRESHOLD,
@@ -7,7 +6,12 @@ import {
     LEVEL_HIGH_FILTER_THRESHOLD,
     LEVEL_LOW_FILTER_THRESHOLD,
 } from '../lib/constants';
-import { HighLow, TelemetryFilter, YesNo } from '../lib/generated/graphql';
+import {
+    HighLow,
+    TelemetryFilter,
+    TelemetrySort,
+    YesNo,
+} from '../lib/generated/graphql';
 
 const useStyles = makeStyles((theme) => ({
     filterItem: {
@@ -15,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const TrackersFilter: FC<{
+export const TelemetryFilterView: FC<{
     value: TelemetryFilter;
     onChange: (v: TelemetryFilter) => void;
 }> = ({ value, onChange }) => {
@@ -80,6 +84,37 @@ export const TrackersFilter: FC<{
                     </MenuItem>
                     <MenuItem value={HighLow.High}>
                         {'>'} {batteryHighText}
+                    </MenuItem>
+                </TextField>
+            </Grid>
+            <Grid item>
+                <TextField
+                    className={classes.filterItem}
+                    select
+                    label="Сортировка"
+                    value={value.sort ?? 'not_selected'}
+                    onChange={handleChange('sort')}
+                >
+                    <MenuItem value={TelemetrySort.Urgent}>
+                        сначала важные
+                    </MenuItem>
+                    <MenuItem value={TelemetrySort.Newest}>
+                        сначала онлайн
+                    </MenuItem>
+                    <MenuItem value={TelemetrySort.Oldest}>
+                        сначала оффлайн
+                    </MenuItem>
+                    <MenuItem value={TelemetrySort.BatteryHigh}>
+                        сначала заряженные
+                    </MenuItem>
+                    <MenuItem value={TelemetrySort.BatteryLow}>
+                        сначала разряженные
+                    </MenuItem>
+                    <MenuItem value={TelemetrySort.LevelLow}>
+                        сначала пустые
+                    </MenuItem>
+                    <MenuItem value={TelemetrySort.LevelHigh}>
+                        сначала полные
                     </MenuItem>
                 </TextField>
             </Grid>
