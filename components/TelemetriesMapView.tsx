@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { FC } from 'react';
-import { MapContainer, TileLayer, useMap } from 'react-leaflet';
-import { useEventEmitter } from '../hooks/useEventEmitter';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import { useGetTelemetriesQuery } from '../lib/generated/graphql';
 import { queryToTelemetryFilters } from './filters/telemetryFilters';
 import { LeafletBarrelMarker } from './LeafletBarrelMarker';
@@ -32,8 +31,8 @@ export const TelemetriesMapView: FC = () => {
                 {data &&
                     data.getTelemetries.map((telemetry) => (
                         <LeafletBarrelMarker
-                            key={telemetry._id}
-                            telemetry={telemetry}
+                            key={telemetry.telemetry._id}
+                            telemetry={telemetry.telemetry}
                         />
                     ))}
             </MapContainer>

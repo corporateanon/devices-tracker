@@ -1,3 +1,4 @@
+import { FilterQuery } from 'mongoose';
 import {
     BATTERY_HIGH_FILTER_THRESHOLD,
     BATTERY_LOW_FILTER_THRESHOLD,
@@ -6,6 +7,7 @@ import {
     OFFLINE_FILTER_TIMEOUT,
 } from '../../constants';
 import { Telemetry } from '../../db/models';
+import { ITelemetry } from '../../db/Telemetry';
 import {
     HighLow,
     Resolvers,
@@ -21,7 +23,8 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
         },
 
         async getTelemetries(_, { filter }) {
-            const match: any = {};
+            const match: FilterQuery<ITelemetry> = {};
+
             if (filter.battery === HighLow.Low) {
                 match.battery = { $lte: BATTERY_LOW_FILTER_THRESHOLD };
             }
@@ -60,7 +63,9 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
                     [TelemetrySort.Urgent]: { score: -1 },
                 }[filter.sort] ?? {};
 
-            return await Telemetry.aggregate([
+            const items = await Telemetry.aggregate<
+                ITelemetry & { score: number }
+            >([
                 {
                     $match: match,
                 },
@@ -79,12 +84,12 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
                 {
                     $sort: sort,
                 },
-                {
-                    $project: {
-                        score: 0,
-                    },
-                },
-            ]).exec();
+            ]);
+
+            return items.map(({ score, ...telemetry }) => ({
+                telemetry,
+                meta: { score },
+            }));
         },
     },
 };

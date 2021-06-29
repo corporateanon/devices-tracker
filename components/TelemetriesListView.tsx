@@ -1,22 +1,21 @@
-import moment from 'moment';
+import { Grid, makeStyles } from '@material-ui/core';
+import MUILink from '@material-ui/core/Link';
+import clsx from 'clsx';
 import 'moment/locale/ru';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 import ReactDataGrid, { Column } from 'react-data-grid';
-import { Telemetry, useGetTelemetriesQuery } from '../lib/generated/graphql';
-import { isBatteryLow, isLevelHigh, isOffline } from '../lib/telemetryUtils';
-import { queryToTelemetryFilters } from './filters/telemetryFilters';
-import classes from './ListView.module.css';
-import clsx from 'clsx';
-import { NavigationPane } from './NavigationPane';
-import { Grid, makeStyles } from '@material-ui/core';
 import {
     createColumnFormatter,
     dateColumnFormatter,
     percentFormatter,
 } from '../lib/formatters';
-import Link from 'next/link';
-import MUILink from '@material-ui/core/Link';
+import { Telemetry, useGetTelemetriesQuery } from '../lib/generated/graphql';
+import { isBatteryLow, isLevelHigh, isOffline } from '../lib/telemetryUtils';
+import { queryToTelemetryFilters } from './filters/telemetryFilters';
+import classes from './ListView.module.css';
+import { NavigationPane } from './NavigationPane';
 
 const columns: readonly Column<Telemetry>[] = [
     {
@@ -83,7 +82,11 @@ export function TelemetriesListView() {
     });
 
     const rows = useMemo(() => {
-        return data?.getTelemetries ?? [];
+        return (
+            data?.getTelemetries?.map(
+                (telemetryWithMetadata) => telemetryWithMetadata.telemetry
+            ) ?? []
+        );
     }, [data]);
 
     return (

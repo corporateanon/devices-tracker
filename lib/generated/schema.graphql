@@ -34,7 +34,7 @@ type Query {
   _: Boolean
   getContact(id: ID!): Contact
   getContacts(filter: ContactFilter): [Contact!]!
-  getTelemetries(filter: TelemetryFilter!): [Telemetry]
+  getTelemetries(filter: TelemetryFilter!): [TelemetryWithMetadata!]!
   getTelemetry(ID: ObjectID!): Telemetry
 }
 
@@ -55,6 +55,10 @@ input TelemetryFilter {
   sort: TelemetrySort
 }
 
+type TelemetryMetadata {
+  score: Float!
+}
+
 enum TelemetrySort {
   URGENT
   NEWEST
@@ -63,6 +67,11 @@ enum TelemetrySort {
   BATTERY_HIGH
   LEVEL_LOW
   LEVEL_HIGH
+}
+
+type TelemetryWithMetadata {
+  telemetry: Telemetry!
+  meta: TelemetryMetadata
 }
 
 enum YesNo {

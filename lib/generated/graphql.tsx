@@ -60,7 +60,7 @@ export type Query = {
   _?: Maybe<Scalars['Boolean']>;
   getContact?: Maybe<Contact>;
   getContacts: Array<Contact>;
-  getTelemetries?: Maybe<Array<Maybe<Telemetry>>>;
+  getTelemetries: Array<TelemetryWithMetadata>;
   getTelemetry?: Maybe<Telemetry>;
 };
 
@@ -102,6 +102,11 @@ export type TelemetryFilter = {
   sort?: Maybe<TelemetrySort>;
 };
 
+export type TelemetryMetadata = {
+  __typename?: 'TelemetryMetadata';
+  score: Scalars['Float'];
+};
+
 export enum TelemetrySort {
   Urgent = 'URGENT',
   Newest = 'NEWEST',
@@ -111,6 +116,12 @@ export enum TelemetrySort {
   LevelLow = 'LEVEL_LOW',
   LevelHigh = 'LEVEL_HIGH'
 }
+
+export type TelemetryWithMetadata = {
+  __typename?: 'TelemetryWithMetadata';
+  telemetry: Telemetry;
+  meta?: Maybe<TelemetryMetadata>;
+};
 
 export enum YesNo {
   Yes = 'YES',
@@ -124,10 +135,16 @@ export type GetTelemetriesQueryVariables = Exact<{
 
 export type GetTelemetriesQuery = (
   { __typename?: 'Query' }
-  & { getTelemetries?: Maybe<Array<Maybe<(
-    { __typename?: 'Telemetry' }
-    & Pick<Telemetry, '_id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
-  )>>> }
+  & { getTelemetries: Array<(
+    { __typename?: 'TelemetryWithMetadata' }
+    & { telemetry: (
+      { __typename?: 'Telemetry' }
+      & Pick<Telemetry, '_id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
+    ), meta?: Maybe<(
+      { __typename?: 'TelemetryMetadata' }
+      & Pick<TelemetryMetadata, 'score'>
+    )> }
+  )> }
 );
 
 export type GetTelemetryQueryVariables = Exact<{
@@ -259,7 +276,9 @@ export type ResolversTypes = {
   Telemetry: ResolverTypeWrapper<Telemetry>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   TelemetryFilter: TelemetryFilter;
+  TelemetryMetadata: ResolverTypeWrapper<TelemetryMetadata>;
   TelemetrySort: TelemetrySort;
+  TelemetryWithMetadata: ResolverTypeWrapper<TelemetryWithMetadata>;
   YesNo: YesNo;
 };
 
@@ -278,6 +297,8 @@ export type ResolversParentTypes = {
   Telemetry: Telemetry;
   Float: Scalars['Float'];
   TelemetryFilter: TelemetryFilter;
+  TelemetryMetadata: TelemetryMetadata;
+  TelemetryWithMetadata: TelemetryWithMetadata;
 };
 
 export type ContactResolvers<ContextType = any, ParentType extends ResolversParentTypes['Contact'] = ResolversParentTypes['Contact']> = {
@@ -306,7 +327,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   getContact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<QueryGetContactArgs, 'id'>>;
   getContacts?: Resolver<Array<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<QueryGetContactsArgs, never>>;
-  getTelemetries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Telemetry']>>>, ParentType, ContextType, RequireFields<QueryGetTelemetriesArgs, 'filter'>>;
+  getTelemetries?: Resolver<Array<ResolversTypes['TelemetryWithMetadata']>, ParentType, ContextType, RequireFields<QueryGetTelemetriesArgs, 'filter'>>;
   getTelemetry?: Resolver<Maybe<ResolversTypes['Telemetry']>, ParentType, ContextType, RequireFields<QueryGetTelemetryArgs, 'ID'>>;
 };
 
@@ -321,6 +342,17 @@ export type TelemetryResolvers<ContextType = any, ParentType extends ResolversPa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type TelemetryMetadataResolvers<ContextType = any, ParentType extends ResolversParentTypes['TelemetryMetadata'] = ResolversParentTypes['TelemetryMetadata']> = {
+  score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TelemetryWithMetadataResolvers<ContextType = any, ParentType extends ResolversParentTypes['TelemetryWithMetadata'] = ResolversParentTypes['TelemetryWithMetadata']> = {
+  telemetry?: Resolver<ResolversTypes['Telemetry'], ParentType, ContextType>;
+  meta?: Resolver<Maybe<ResolversTypes['TelemetryMetadata']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Contact?: ContactResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
@@ -328,6 +360,8 @@ export type Resolvers<ContextType = any> = {
   ObjectID?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
   Telemetry?: TelemetryResolvers<ContextType>;
+  TelemetryMetadata?: TelemetryMetadataResolvers<ContextType>;
+  TelemetryWithMetadata?: TelemetryWithMetadataResolvers<ContextType>;
 };
 
 
@@ -341,13 +375,18 @@ export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 export const GetTelemetriesDocument = gql`
     query GetTelemetries($filter: TelemetryFilter!) {
   getTelemetries(filter: $filter) {
-    _id
-    deviceId
-    lat
-    lng
-    level
-    battery
-    updatedAt
+    telemetry {
+      _id
+      deviceId
+      lat
+      lng
+      level
+      battery
+      updatedAt
+    }
+    meta {
+      score
+    }
   }
 }
     `;

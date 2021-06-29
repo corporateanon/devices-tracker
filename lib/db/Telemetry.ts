@@ -1,6 +1,7 @@
 import mongoose, { Model } from 'mongoose';
 
-interface ITelemetry {
+export interface ITelemetry {
+    _id: string;
     deviceId: string;
     lat: number;
     lng: number;

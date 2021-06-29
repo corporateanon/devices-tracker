@@ -3,13 +3,18 @@ import { gql } from '@apollo/client';
 gql`
     query GetTelemetries($filter: TelemetryFilter!) {
         getTelemetries(filter: $filter) {
-            _id
-            deviceId
-            lat
-            lng
-            level
-            battery
-            updatedAt
+            telemetry {
+                _id
+                deviceId
+                lat
+                lng
+                level
+                battery
+                updatedAt
+            }
+            meta {
+                score
+            }
         }
     }
 

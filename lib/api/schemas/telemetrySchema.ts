@@ -13,6 +13,15 @@ export const telemetrySchema = gql`
         updatedAt: DateTime!
     }
 
+    type TelemetryMetadata {
+        score: Float!
+    }
+
+    type TelemetryWithMetadata {
+        telemetry: Telemetry!
+        meta: TelemetryMetadata
+    }
+
     enum YesNo {
         YES
         NO
@@ -41,7 +50,7 @@ export const telemetrySchema = gql`
     }
 
     extend type Query {
-        getTelemetries(filter: TelemetryFilter!): [Telemetry]
+        getTelemetries(filter: TelemetryFilter!): [TelemetryWithMetadata!]!
         getTelemetry(ID: ObjectID!): Telemetry
     }
 `;
