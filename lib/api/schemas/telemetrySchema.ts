@@ -11,6 +11,7 @@ export const telemetrySchema = gql`
         level: Float!
         battery: Float!
         updatedAt: DateTime!
+        contactID: ObjectID
     }
 
     type TelemetryMetadata {
@@ -49,8 +50,17 @@ export const telemetrySchema = gql`
         sort: TelemetrySort
     }
 
+    input TelemetryUpdate {
+        _id: ObjectID!
+        contactID: ObjectID!
+    }
+
     extend type Query {
         getTelemetries(filter: TelemetryFilter!): [TelemetryWithMetadata!]!
         getTelemetry(ID: ObjectID!): Telemetry
+    }
+
+    extend type Mutation {
+        updateTelemetry(telemetry: TelemetryUpdate!): Boolean!
     }
 `;

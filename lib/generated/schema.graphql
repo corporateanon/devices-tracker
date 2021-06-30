@@ -26,6 +26,7 @@ enum HighLow {
 type Mutation {
   _: Boolean
   saveContact(contact: ContactInput!): Contact
+  updateTelemetry(telemetry: TelemetryUpdate!): Boolean!
 }
 
 scalar ObjectID
@@ -46,6 +47,7 @@ type Telemetry {
   level: Float!
   battery: Float!
   updatedAt: DateTime!
+  contactID: ObjectID
 }
 
 input TelemetryFilter {
@@ -67,6 +69,11 @@ enum TelemetrySort {
   BATTERY_HIGH
   LEVEL_LOW
   LEVEL_HIGH
+}
+
+input TelemetryUpdate {
+  _id: ObjectID!
+  contactID: ObjectID!
 }
 
 type TelemetryWithMetadata {

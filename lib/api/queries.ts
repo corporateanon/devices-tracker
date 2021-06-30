@@ -11,6 +11,7 @@ gql`
                 level
                 battery
                 updatedAt
+                contactID
             }
             meta {
                 score
@@ -27,6 +28,7 @@ gql`
             level
             battery
             updatedAt
+            contactID
         }
     }
 
@@ -46,5 +48,9 @@ gql`
             phone
             updatedAt
         }
+    }
+
+    mutation SaveTelemetry($telemetry: TelemetryUpdate!) {
+        updateTelemetry(telemetry: $telemetry)
     }
 `;

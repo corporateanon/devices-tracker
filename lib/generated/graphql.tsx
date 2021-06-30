@@ -47,11 +47,17 @@ export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['Boolean']>;
   saveContact?: Maybe<Contact>;
+  updateTelemetry: Scalars['Boolean'];
 };
 
 
 export type MutationSaveContactArgs = {
   contact: ContactInput;
+};
+
+
+export type MutationUpdateTelemetryArgs = {
+  telemetry: TelemetryUpdate;
 };
 
 
@@ -93,6 +99,7 @@ export type Telemetry = {
   level: Scalars['Float'];
   battery: Scalars['Float'];
   updatedAt: Scalars['DateTime'];
+  contactID?: Maybe<Scalars['ObjectID']>;
 };
 
 export type TelemetryFilter = {
@@ -117,6 +124,11 @@ export enum TelemetrySort {
   LevelHigh = 'LEVEL_HIGH'
 }
 
+export type TelemetryUpdate = {
+  _id: Scalars['ObjectID'];
+  contactID: Scalars['ObjectID'];
+};
+
 export type TelemetryWithMetadata = {
   __typename?: 'TelemetryWithMetadata';
   telemetry: Telemetry;
@@ -139,7 +151,7 @@ export type GetTelemetriesQuery = (
     { __typename?: 'TelemetryWithMetadata' }
     & { telemetry: (
       { __typename?: 'Telemetry' }
-      & Pick<Telemetry, '_id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
+      & Pick<Telemetry, '_id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt' | 'contactID'>
     ), meta?: Maybe<(
       { __typename?: 'TelemetryMetadata' }
       & Pick<TelemetryMetadata, 'score'>
@@ -156,7 +168,7 @@ export type GetTelemetryQuery = (
   { __typename?: 'Query' }
   & { getTelemetry?: Maybe<(
     { __typename?: 'Telemetry' }
-    & Pick<Telemetry, '_id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt'>
+    & Pick<Telemetry, '_id' | 'deviceId' | 'lat' | 'lng' | 'level' | 'battery' | 'updatedAt' | 'contactID'>
   )> }
 );
 
@@ -182,6 +194,16 @@ export type SaveContactMutation = (
     { __typename?: 'Contact' }
     & Pick<Contact, '_id' | 'name' | 'phone' | 'updatedAt'>
   )> }
+);
+
+export type SaveTelemetryMutationVariables = Exact<{
+  telemetry: TelemetryUpdate;
+}>;
+
+
+export type SaveTelemetryMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateTelemetry'>
 );
 
 
@@ -278,6 +300,7 @@ export type ResolversTypes = {
   TelemetryFilter: TelemetryFilter;
   TelemetryMetadata: ResolverTypeWrapper<TelemetryMetadata>;
   TelemetrySort: TelemetrySort;
+  TelemetryUpdate: TelemetryUpdate;
   TelemetryWithMetadata: ResolverTypeWrapper<TelemetryWithMetadata>;
   YesNo: YesNo;
 };
@@ -298,6 +321,7 @@ export type ResolversParentTypes = {
   Float: Scalars['Float'];
   TelemetryFilter: TelemetryFilter;
   TelemetryMetadata: TelemetryMetadata;
+  TelemetryUpdate: TelemetryUpdate;
   TelemetryWithMetadata: TelemetryWithMetadata;
 };
 
@@ -317,6 +341,7 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   saveContact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<MutationSaveContactArgs, 'contact'>>;
+  updateTelemetry?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateTelemetryArgs, 'telemetry'>>;
 };
 
 export interface ObjectIdScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['ObjectID'], any> {
@@ -339,6 +364,7 @@ export type TelemetryResolvers<ContextType = any, ParentType extends ResolversPa
   level?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   battery?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  contactID?: Resolver<Maybe<ResolversTypes['ObjectID']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -383,6 +409,7 @@ export const GetTelemetriesDocument = gql`
       level
       battery
       updatedAt
+      contactID
     }
     meta {
       score
@@ -428,6 +455,7 @@ export const GetTelemetryDocument = gql`
     level
     battery
     updatedAt
+    contactID
   }
 }
     `;
@@ -532,3 +560,34 @@ export function useSaveContactMutation(baseOptions?: Apollo.MutationHookOptions<
 export type SaveContactMutationHookResult = ReturnType<typeof useSaveContactMutation>;
 export type SaveContactMutationResult = Apollo.MutationResult<SaveContactMutation>;
 export type SaveContactMutationOptions = Apollo.BaseMutationOptions<SaveContactMutation, SaveContactMutationVariables>;
+export const SaveTelemetryDocument = gql`
+    mutation SaveTelemetry($telemetry: TelemetryUpdate!) {
+  updateTelemetry(telemetry: $telemetry)
+}
+    `;
+export type SaveTelemetryMutationFn = Apollo.MutationFunction<SaveTelemetryMutation, SaveTelemetryMutationVariables>;
+
+/**
+ * __useSaveTelemetryMutation__
+ *
+ * To run a mutation, you first call `useSaveTelemetryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSaveTelemetryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [saveTelemetryMutation, { data, loading, error }] = useSaveTelemetryMutation({
+ *   variables: {
+ *      telemetry: // value for 'telemetry'
+ *   },
+ * });
+ */
+export function useSaveTelemetryMutation(baseOptions?: Apollo.MutationHookOptions<SaveTelemetryMutation, SaveTelemetryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SaveTelemetryMutation, SaveTelemetryMutationVariables>(SaveTelemetryDocument, options);
+      }
+export type SaveTelemetryMutationHookResult = ReturnType<typeof useSaveTelemetryMutation>;
+export type SaveTelemetryMutationResult = Apollo.MutationResult<SaveTelemetryMutation>;
+export type SaveTelemetryMutationOptions = Apollo.BaseMutationOptions<SaveTelemetryMutation, SaveTelemetryMutationVariables>;

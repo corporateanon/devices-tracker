@@ -92,4 +92,13 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
             }));
         },
     },
+    Mutation: {
+        async updateTelemetry(_, { telemetry: { _id, contactID } }) {
+            await Telemetry.findByIdAndUpdate(_id, {
+                updatedAt: new Date(),
+                contactID,
+            });
+            return true;
+        },
+    },
 };

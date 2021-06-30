@@ -13,7 +13,7 @@ export const contactResolvers: Resolvers<ApplicationContext> = {
         },
 
         async getContacts() {
-            const contacts = await Contact.find().lean();
+            const contacts = await Contact.find().sort('name').lean();
             return contacts;
         },
     },
