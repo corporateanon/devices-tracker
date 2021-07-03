@@ -10,12 +10,12 @@
                 "type": "string"
             },
             "battery": {
-                "type": ["number"],
+                "type": "number",
                 "maximum": 1,
                 "minimum": 0
             },
             "level": {
-                "type": ["number"],
+                "type": "number",
                 "maximum": 1,
                 "minimum": 0
             },
