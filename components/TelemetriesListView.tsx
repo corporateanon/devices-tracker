@@ -14,6 +14,7 @@ import {
 } from '../lib/formatters';
 import {
     Contact,
+    GetTelemetriesQuery,
     Maybe,
     Telemetry,
     useGetTelemetriesQuery,
@@ -23,7 +24,13 @@ import { queryToTelemetryFilters } from './filters/telemetryFilters';
 import classes from './ListView.module.css';
 import { TelemetryToolbar } from './TelemetryToolbar';
 
-const columns: readonly Column<Telemetry & { contact: Maybe<Contact> }>[] = [
+const columns: readonly Column<
+    Telemetry & {
+        contact: Maybe<
+            GetTelemetriesQuery['getTelemetries'][number]['meta']['contact']
+        >;
+    }
+>[] = [
     {
         key: 'deviceId',
         name: 'ID устройства',
