@@ -1,5 +1,4 @@
 import mongoose, { Schema, Model, ObjectId } from 'mongoose';
-import { IContact } from './Contact';
 
 export interface ITelemetry {
     _id: string;

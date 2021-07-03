@@ -17,13 +17,9 @@ import {
     useSaveTelemetryMutation,
 } from '../../lib/generated/graphql';
 
-function getId(query: any) {
-    return `${query.id}`;
-}
-
 const TelemetryPage: React.FC = () => {
     const { query } = useRouter();
-    const id = getId(query);
+    const id = `${query.id}`;
     const { data } = useGetTelemetryQuery({
         fetchPolicy: 'cache-and-network',
         ssr: false,

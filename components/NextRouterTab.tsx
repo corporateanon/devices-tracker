@@ -1,6 +1,6 @@
 import Tab from '@material-ui/core/Tab';
 import Link from 'next/link';
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 const NextRouterTab: React.FC<{
     value: string;

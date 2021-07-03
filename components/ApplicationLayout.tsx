@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { ApplicationBar, ApplicationBarProps } from './ApplicationBar';
 
 const useStyles = makeStyles(
-    (theme) => ({
+    () => ({
         root: {
             height: '100vh',
         },

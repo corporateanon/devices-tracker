@@ -2,22 +2,18 @@ import { Grid, makeStyles, MenuItem } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
-import { pick } from 'lodash';
 import 'moment/locale/ru';
 import { useRouter } from 'next/router';
-import React, { useCallback, useMemo } from 'react';
-import { useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import ReactDataGrid, {
     Column,
     RowsChangeData,
     TextEditor,
 } from 'react-data-grid';
-import { useMutation } from 'react-query';
 import { dateColumnFormatter } from '../lib/formatters';
 import {
     Contact,
     ContactInput,
-    GetContactsDocument,
     useGetContactsQuery,
     useSaveContactMutation,
     useUpdateContactArchivedMutation,
@@ -119,10 +115,10 @@ const useStyles = makeStyles({
     },
 });
 
-export function ContactsListView() {
+export const ContactsListView: FC = () => {
     const classes = useStyles();
     const { query } = useRouter();
-    const { error, data, loading } = useGetContactsQuery({
+    const { data } = useGetContactsQuery({
         variables: {
             filter: queryToContactFilters(query),
         },
@@ -149,7 +145,7 @@ export function ContactsListView() {
     const handleRowsChange = useCallback<
         (rows: Contact[], data: RowsChangeData<Contact>) => void
     >(
-        (rows, { column, indexes: [idx] }) => {
+        (rows, { indexes: [idx] }) => {
             const contact = rows[idx];
             const contactInput: ContactInput = {
                 _id: contact._id,
@@ -195,4 +191,4 @@ export function ContactsListView() {
             </Grid>
         </Grid>
     );
-}
+};

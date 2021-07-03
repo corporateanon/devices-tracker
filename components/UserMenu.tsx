@@ -20,7 +20,7 @@ export const UserMenu: FC = () => {
     const handleOpen = useCallback((event) => {
         setMenuAnchor(event.currentTarget);
     }, []);
-    const handleSignOut = useCallback((event) => {
+    const handleSignOut = useCallback(() => {
         signOut();
     }, []);
 

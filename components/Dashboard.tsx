@@ -8,7 +8,7 @@ const DynamicMapView = dynamic(
     () => import('./TelemetriesMapView').then((m) => m.TelemetriesMapView),
     { ssr: false }
 );
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: { height: '100%' },
 }));
 

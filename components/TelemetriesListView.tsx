@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import 'moment/locale/ru';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import ReactDataGrid, { Column } from 'react-data-grid';
 import {
     createColumnFormatter,
@@ -13,7 +13,6 @@ import {
     percentFormatter,
 } from '../lib/formatters';
 import {
-    Contact,
     GetTelemetriesQuery,
     Maybe,
     Telemetry,
@@ -109,10 +108,10 @@ const useStyles = makeStyles({
     },
 });
 
-export function TelemetriesListView() {
+export const TelemetriesListView: FC = () => {
     const classes = useStyles();
     const { query } = useRouter();
-    const { error, data, loading } = useGetTelemetriesQuery({
+    const { data } = useGetTelemetriesQuery({
         pollInterval: 60000,
         ssr: false,
         fetchPolicy: 'cache-and-network',
@@ -145,4 +144,4 @@ export function TelemetriesListView() {
             </Grid>
         </Grid>
     );
-}
+};

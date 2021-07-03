@@ -18,7 +18,7 @@ export default NextAuth({
     database: process.env.MONGODB_CONNECTION,
 
     callbacks: {
-        async signIn(user, account, profile) {
+        async signIn(user) {
             if (AUTHORIZED_EMAILS.includes(user.email)) {
                 return true;
             }
