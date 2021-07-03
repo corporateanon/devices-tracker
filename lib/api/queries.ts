@@ -37,6 +37,7 @@ gql`
             _id
             name
             phone
+            archived
             updatedAt
         }
     }
@@ -48,6 +49,10 @@ gql`
             phone
             updatedAt
         }
+    }
+
+    mutation UpdateContactArchived($contact: ContactArchivedInput!) {
+        updateContactArchived(contact: $contact)
     }
 
     mutation SaveTelemetry($telemetry: TelemetryUpdate!) {

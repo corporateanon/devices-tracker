@@ -76,6 +76,7 @@ export function TelemetriesListView() {
     const { error, data, loading } = useGetTelemetriesQuery({
         pollInterval: 60000,
         ssr: false,
+        fetchPolicy: 'cache-and-network',
         variables: {
             filter: queryToTelemetryFilters(query),
         },

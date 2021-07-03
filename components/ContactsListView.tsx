@@ -1,15 +1,18 @@
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid, makeStyles, MenuItem } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
 import { pick } from 'lodash';
 import 'moment/locale/ru';
 import { useRouter } from 'next/router';
 import React, { useCallback, useMemo } from 'react';
+import { useState } from 'react';
 import ReactDataGrid, {
     Column,
     RowsChangeData,
     TextEditor,
 } from 'react-data-grid';
+import { useMutation } from 'react-query';
 import { dateColumnFormatter } from '../lib/formatters';
 import {
     Contact,
@@ -17,6 +20,7 @@ import {
     GetContactsDocument,
     useGetContactsQuery,
     useSaveContactMutation,
+    useUpdateContactArchivedMutation,
 } from '../lib/generated/graphql';
 import { ContactToolbar } from './ContactToolbar';
 import { queryToContactFilters } from './filters/contactFilters';
@@ -38,7 +42,70 @@ const columns: readonly Column<Contact>[] = [
         name: 'Последнее изменение',
         formatter: dateColumnFormatter,
     },
+    {
+        key: '$actions',
+        name: '',
+        // eslint-disable-next-line react/display-name
+        formatter: ({ row }) => <ContactMenu contact={row} />,
+        width: 100,
+    },
 ];
+
+const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
+    const [anchor, setAnchor] = useState<HTMLElement>(null);
+    const handleClick = useCallback((e) => {
+        setAnchor(e.currentTarget);
+    }, []);
+    const handleClose = useCallback(() => {
+        setAnchor(null);
+    }, []);
+    const [updateArchived] = useUpdateContactArchivedMutation();
+
+    const handleArchive = useCallback(() => {
+        handleClose();
+        updateArchived({
+            variables: {
+                contact: {
+                    _id: contact._id,
+                    archived: true,
+                },
+            },
+            refetchQueries: ['GetContacts'],
+        });
+    }, [contact, handleClose, updateArchived]);
+
+    const handleUnarchive = useCallback(() => {
+        handleClose();
+        updateArchived({
+            variables: {
+                contact: {
+                    _id: contact._id,
+                    archived: false,
+                },
+            },
+            refetchQueries: ['GetContacts'],
+        });
+    }, [contact, handleClose, updateArchived]);
+
+    return (
+        <>
+            <Button variant="outlined" size="small" onClick={handleClick}>
+                ...
+            </Button>
+            <Menu
+                open={Boolean(anchor)}
+                anchorEl={anchor}
+                onClose={handleClose}
+            >
+                {contact.archived ? (
+                    <MenuItem onClick={handleUnarchive}>Восстановить</MenuItem>
+                ) : (
+                    <MenuItem onClick={handleArchive}>Архивировать</MenuItem>
+                )}
+            </Menu>
+        </>
+    );
+};
 
 const useStyles = makeStyles({
     root: {
@@ -59,6 +126,7 @@ export function ContactsListView() {
         variables: {
             filter: queryToContactFilters(query),
         },
+        fetchPolicy: 'cache-and-network',
         ssr: false,
     });
 
@@ -73,7 +141,7 @@ export function ContactsListView() {
                 variables: {
                     contact: contactInput,
                 },
-                refetchQueries: [{ query: GetContactsDocument }],
+                refetchQueries: ['GetContacts'],
             });
         },
         [saveContact]

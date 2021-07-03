@@ -41,6 +41,7 @@ export const contactResolvers: Resolvers<ApplicationContext> = {
                 contactInput._id,
                 {
                     ...contactInput,
+                    //TODO: use hook
                     updatedAt: new Date(),
                 },
                 {
@@ -51,6 +52,20 @@ export const contactResolvers: Resolvers<ApplicationContext> = {
                 return null;
             }
             return doc;
+        },
+        async updateContactArchived(_, { contact: contactInput }) {
+            const doc = await Contact.findByIdAndUpdate(
+                contactInput._id,
+                {
+                    archived: contactInput.archived,
+                    //TODO: use hook
+                    updatedAt: new Date(),
+                },
+                {
+                    new: true,
+                }
+            );
+            return Boolean(doc);
         },
     },
 };
