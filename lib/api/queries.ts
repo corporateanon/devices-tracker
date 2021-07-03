@@ -15,6 +15,10 @@ gql`
             }
             meta {
                 score
+                contact {
+                    name
+                    phone
+                }
             }
         }
     }
@@ -32,11 +36,12 @@ gql`
         }
     }
 
-    query GetContacts {
-        getContacts {
+    query GetContacts($filter: ContactFilter) {
+        getContacts(filter: $filter) {
             _id
             name
             phone
+            archived
             updatedAt
         }
     }
@@ -48,6 +53,10 @@ gql`
             phone
             updatedAt
         }
+    }
+
+    mutation UpdateContactArchived($contact: ContactArchivedInput!) {
+        updateContactArchived(contact: $contact)
     }
 
     mutation SaveTelemetry($telemetry: TelemetryUpdate!) {

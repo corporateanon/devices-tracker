@@ -19,8 +19,14 @@ export const contactSchema = gql`
         phone: String
     }
 
+    input ContactArchivedInput {
+        _id: ID!
+        archived: Boolean!
+    }
+
     extend type Mutation {
         saveContact(contact: ContactInput!): Contact
+        updateContactArchived(contact: ContactArchivedInput!): Boolean!
     }
 
     extend type Query {

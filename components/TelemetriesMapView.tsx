@@ -10,6 +10,7 @@ export const TelemetriesMapView: FC = () => {
     const { data } = useGetTelemetriesQuery({
         pollInterval: 60000,
         ssr: false,
+        fetchPolicy: 'cache-and-network',
         variables: {
             filter: queryToTelemetryFilters(query),
         },

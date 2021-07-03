@@ -1,4 +1,5 @@
-import { Contact } from '../../db/Contact';
+import { FilterQuery } from 'mongoose';
+import { Contact, IContact } from '../../db/Contact';
 import { Resolvers } from '../../generated/graphql';
 import { ApplicationContext } from '../applicationContext';
 
@@ -12,8 +13,15 @@ export const contactResolvers: Resolvers<ApplicationContext> = {
             return contact;
         },
 
-        async getContacts() {
-            const contacts = await Contact.find().sort('name').lean();
+        async getContacts(_, { filter = {} }) {
+            const query: FilterQuery<IContact> = filter.archived
+                ? {
+                      archived: true,
+                  }
+                : {
+                      archived: { $ne: true },
+                  };
+            const contacts = await Contact.find(query).lean();
             return contacts;
         },
     },
@@ -33,6 +41,7 @@ export const contactResolvers: Resolvers<ApplicationContext> = {
                 contactInput._id,
                 {
                     ...contactInput,
+                    //TODO: use hook
                     updatedAt: new Date(),
                 },
                 {
@@ -43,6 +52,20 @@ export const contactResolvers: Resolvers<ApplicationContext> = {
                 return null;
             }
             return doc;
+        },
+        async updateContactArchived(_, { contact: contactInput }) {
+            const doc = await Contact.findByIdAndUpdate(
+                contactInput._id,
+                {
+                    archived: contactInput.archived,
+                    //TODO: use hook
+                    updatedAt: new Date(),
+                },
+                {
+                    new: true,
+                }
+            );
+            return Boolean(doc);
         },
     },
 };

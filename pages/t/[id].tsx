@@ -25,6 +25,8 @@ const TelemetryPage: React.FC = () => {
     const { query } = useRouter();
     const id = getId(query);
     const { data } = useGetTelemetryQuery({
+        fetchPolicy: 'cache-and-network',
+        ssr: false,
         variables: { id },
     });
     const item = data?.getTelemetry;

@@ -27,6 +27,11 @@ export type Contact = {
   archived?: Maybe<Scalars['Boolean']>;
 };
 
+export type ContactArchivedInput = {
+  _id: Scalars['ID'];
+  archived: Scalars['Boolean'];
+};
+
 export type ContactFilter = {
   archived?: Maybe<Scalars['Boolean']>;
 };
@@ -47,12 +52,18 @@ export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['Boolean']>;
   saveContact?: Maybe<Contact>;
+  updateContactArchived: Scalars['Boolean'];
   updateTelemetry: Scalars['Boolean'];
 };
 
 
 export type MutationSaveContactArgs = {
   contact: ContactInput;
+};
+
+
+export type MutationUpdateContactArchivedArgs = {
+  contact: ContactArchivedInput;
 };
 
 
@@ -112,6 +123,7 @@ export type TelemetryFilter = {
 export type TelemetryMetadata = {
   __typename?: 'TelemetryMetadata';
   score: Scalars['Float'];
+  contact?: Maybe<Contact>;
 };
 
 export enum TelemetrySort {
@@ -155,6 +167,10 @@ export type GetTelemetriesQuery = (
     ), meta?: Maybe<(
       { __typename?: 'TelemetryMetadata' }
       & Pick<TelemetryMetadata, 'score'>
+      & { contact?: Maybe<(
+        { __typename?: 'Contact' }
+        & Pick<Contact, 'name' | 'phone'>
+      )> }
     )> }
   )> }
 );
@@ -172,14 +188,16 @@ export type GetTelemetryQuery = (
   )> }
 );
 
-export type GetContactsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetContactsQueryVariables = Exact<{
+  filter?: Maybe<ContactFilter>;
+}>;
 
 
 export type GetContactsQuery = (
   { __typename?: 'Query' }
   & { getContacts: Array<(
     { __typename?: 'Contact' }
-    & Pick<Contact, '_id' | 'name' | 'phone' | 'updatedAt'>
+    & Pick<Contact, '_id' | 'name' | 'phone' | 'archived' | 'updatedAt'>
   )> }
 );
 
@@ -194,6 +212,16 @@ export type SaveContactMutation = (
     { __typename?: 'Contact' }
     & Pick<Contact, '_id' | 'name' | 'phone' | 'updatedAt'>
   )> }
+);
+
+export type UpdateContactArchivedMutationVariables = Exact<{
+  contact: ContactArchivedInput;
+}>;
+
+
+export type UpdateContactArchivedMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateContactArchived'>
 );
 
 export type SaveTelemetryMutationVariables = Exact<{
@@ -287,9 +315,10 @@ export type ResolversTypes = {
   Contact: ResolverTypeWrapper<Contact>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  ContactArchivedInput: ContactArchivedInput;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   ContactFilter: ContactFilter;
   ContactInput: ContactInput;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   HighLow: HighLow;
   Mutation: ResolverTypeWrapper<{}>;
@@ -310,9 +339,10 @@ export type ResolversParentTypes = {
   Contact: Contact;
   String: Scalars['String'];
   Boolean: Scalars['Boolean'];
+  ContactArchivedInput: ContactArchivedInput;
+  ID: Scalars['ID'];
   ContactFilter: ContactFilter;
   ContactInput: ContactInput;
-  ID: Scalars['ID'];
   DateTime: Scalars['DateTime'];
   Mutation: {};
   ObjectID: Scalars['ObjectID'];
@@ -341,6 +371,7 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   saveContact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<MutationSaveContactArgs, 'contact'>>;
+  updateContactArchived?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateContactArchivedArgs, 'contact'>>;
   updateTelemetry?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateTelemetryArgs, 'telemetry'>>;
 };
 
@@ -370,6 +401,7 @@ export type TelemetryResolvers<ContextType = any, ParentType extends ResolversPa
 
 export type TelemetryMetadataResolvers<ContextType = any, ParentType extends ResolversParentTypes['TelemetryMetadata'] = ResolversParentTypes['TelemetryMetadata']> = {
   score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  contact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -413,6 +445,10 @@ export const GetTelemetriesDocument = gql`
     }
     meta {
       score
+      contact {
+        name
+        phone
+      }
     }
   }
 }
@@ -488,11 +524,12 @@ export type GetTelemetryQueryHookResult = ReturnType<typeof useGetTelemetryQuery
 export type GetTelemetryLazyQueryHookResult = ReturnType<typeof useGetTelemetryLazyQuery>;
 export type GetTelemetryQueryResult = Apollo.QueryResult<GetTelemetryQuery, GetTelemetryQueryVariables>;
 export const GetContactsDocument = gql`
-    query GetContacts {
-  getContacts {
+    query GetContacts($filter: ContactFilter) {
+  getContacts(filter: $filter) {
     _id
     name
     phone
+    archived
     updatedAt
   }
 }
@@ -510,6 +547,7 @@ export const GetContactsDocument = gql`
  * @example
  * const { data, loading, error } = useGetContactsQuery({
  *   variables: {
+ *      filter: // value for 'filter'
  *   },
  * });
  */
@@ -560,6 +598,37 @@ export function useSaveContactMutation(baseOptions?: Apollo.MutationHookOptions<
 export type SaveContactMutationHookResult = ReturnType<typeof useSaveContactMutation>;
 export type SaveContactMutationResult = Apollo.MutationResult<SaveContactMutation>;
 export type SaveContactMutationOptions = Apollo.BaseMutationOptions<SaveContactMutation, SaveContactMutationVariables>;
+export const UpdateContactArchivedDocument = gql`
+    mutation UpdateContactArchived($contact: ContactArchivedInput!) {
+  updateContactArchived(contact: $contact)
+}
+    `;
+export type UpdateContactArchivedMutationFn = Apollo.MutationFunction<UpdateContactArchivedMutation, UpdateContactArchivedMutationVariables>;
+
+/**
+ * __useUpdateContactArchivedMutation__
+ *
+ * To run a mutation, you first call `useUpdateContactArchivedMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateContactArchivedMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateContactArchivedMutation, { data, loading, error }] = useUpdateContactArchivedMutation({
+ *   variables: {
+ *      contact: // value for 'contact'
+ *   },
+ * });
+ */
+export function useUpdateContactArchivedMutation(baseOptions?: Apollo.MutationHookOptions<UpdateContactArchivedMutation, UpdateContactArchivedMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateContactArchivedMutation, UpdateContactArchivedMutationVariables>(UpdateContactArchivedDocument, options);
+      }
+export type UpdateContactArchivedMutationHookResult = ReturnType<typeof useUpdateContactArchivedMutation>;
+export type UpdateContactArchivedMutationResult = Apollo.MutationResult<UpdateContactArchivedMutation>;
+export type UpdateContactArchivedMutationOptions = Apollo.BaseMutationOptions<UpdateContactArchivedMutation, UpdateContactArchivedMutationVariables>;
 export const SaveTelemetryDocument = gql`
     mutation SaveTelemetry($telemetry: TelemetryUpdate!) {
   updateTelemetry(telemetry: $telemetry)

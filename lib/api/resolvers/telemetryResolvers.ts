@@ -6,6 +6,7 @@ import {
     LEVEL_LOW_FILTER_THRESHOLD,
     OFFLINE_FILTER_TIMEOUT,
 } from '../../constants';
+import { IContact } from '../../db/Contact';
 import { Telemetry } from '../../db/models';
 import { ITelemetry } from '../../db/Telemetry';
 import {
@@ -63,12 +64,17 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
                     [TelemetrySort.Urgent]: { score: -1 },
                 }[filter.sort] ?? {};
 
+            const contactsLookup = {
+                from: 'contacts',
+                localField: 'contactID',
+                foreignField: '_id',
+                as: 'contact',
+            };
+
             const items = await Telemetry.aggregate<
-                ITelemetry & { score: number }
+                ITelemetry & { score: number; contact: IContact[] }
             >([
-                {
-                    $match: match,
-                },
+                { $match: match },
                 {
                     $addFields: {
                         score: {
@@ -81,14 +87,16 @@ export const telemetryResolvers: Resolvers<ApplicationContext> = {
                         },
                     },
                 },
-                {
-                    $sort: sort,
-                },
+                { $sort: sort },
+                { $lookup: contactsLookup },
             ]);
 
             return items.map(({ score, ...telemetry }) => ({
                 telemetry,
-                meta: { score },
+                meta: {
+                    score,
+                    contact: telemetry.contact?.[0] ?? null,
+                },
             }));
         },
     },

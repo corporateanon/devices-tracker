@@ -6,6 +6,11 @@ type Contact {
   archived: Boolean
 }
 
+input ContactArchivedInput {
+  _id: ID!
+  archived: Boolean!
+}
+
 input ContactFilter {
   archived: Boolean
 }
@@ -26,6 +31,7 @@ enum HighLow {
 type Mutation {
   _: Boolean
   saveContact(contact: ContactInput!): Contact
+  updateContactArchived(contact: ContactArchivedInput!): Boolean!
   updateTelemetry(telemetry: TelemetryUpdate!): Boolean!
 }
 
@@ -59,6 +65,7 @@ input TelemetryFilter {
 
 type TelemetryMetadata {
   score: Float!
+  contact: Contact
 }
 
 enum TelemetrySort {
