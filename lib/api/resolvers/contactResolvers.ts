@@ -1,4 +1,5 @@
-import { Contact } from '../../db/Contact';
+import { FilterQuery } from 'mongoose';
+import { Contact, IContact } from '../../db/Contact';
 import { Resolvers } from '../../generated/graphql';
 import { ApplicationContext } from '../applicationContext';
 
@@ -12,8 +13,11 @@ export const contactResolvers: Resolvers<ApplicationContext> = {
             return contact;
         },
 
-        async getContacts() {
-            const contacts = await Contact.find().sort('name').lean();
+        async getContacts(_, { filter }) {
+            const query: FilterQuery<IContact> = {
+                archived: Boolean(filter.archived),
+            };
+            const contacts = await Contact.find(query).lean();
             return contacts;
         },
     },
