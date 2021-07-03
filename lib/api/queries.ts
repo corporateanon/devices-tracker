@@ -15,6 +15,10 @@ gql`
             }
             meta {
                 score
+                contact {
+                    name
+                    phone
+                }
             }
         }
     }

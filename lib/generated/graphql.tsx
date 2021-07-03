@@ -123,6 +123,7 @@ export type TelemetryFilter = {
 export type TelemetryMetadata = {
   __typename?: 'TelemetryMetadata';
   score: Scalars['Float'];
+  contact?: Maybe<Contact>;
 };
 
 export enum TelemetrySort {
@@ -166,6 +167,10 @@ export type GetTelemetriesQuery = (
     ), meta?: Maybe<(
       { __typename?: 'TelemetryMetadata' }
       & Pick<TelemetryMetadata, 'score'>
+      & { contact?: Maybe<(
+        { __typename?: 'Contact' }
+        & Pick<Contact, 'name' | 'phone'>
+      )> }
     )> }
   )> }
 );
@@ -396,6 +401,7 @@ export type TelemetryResolvers<ContextType = any, ParentType extends ResolversPa
 
 export type TelemetryMetadataResolvers<ContextType = any, ParentType extends ResolversParentTypes['TelemetryMetadata'] = ResolversParentTypes['TelemetryMetadata']> = {
   score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  contact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -439,6 +445,10 @@ export const GetTelemetriesDocument = gql`
     }
     meta {
       score
+      contact {
+        name
+        phone
+      }
     }
   }
 }

@@ -16,6 +16,7 @@ export const telemetrySchema = gql`
 
     type TelemetryMetadata {
         score: Float!
+        contact: Contact
     }
 
     type TelemetryWithMetadata {

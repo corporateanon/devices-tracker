@@ -65,6 +65,7 @@ input TelemetryFilter {
 
 type TelemetryMetadata {
   score: Float!
+  contact: Contact
 }
 
 enum TelemetrySort {
