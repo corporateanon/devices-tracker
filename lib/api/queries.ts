@@ -32,8 +32,8 @@ gql`
         }
     }
 
-    query GetContacts {
-        getContacts {
+    query GetContacts($filter: ContactFilter) {
+        getContacts(filter: $filter) {
             _id
             name
             phone

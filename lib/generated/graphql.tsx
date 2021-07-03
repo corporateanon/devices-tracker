@@ -172,7 +172,9 @@ export type GetTelemetryQuery = (
   )> }
 );
 
-export type GetContactsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetContactsQueryVariables = Exact<{
+  filter?: Maybe<ContactFilter>;
+}>;
 
 
 export type GetContactsQuery = (
@@ -488,8 +490,8 @@ export type GetTelemetryQueryHookResult = ReturnType<typeof useGetTelemetryQuery
 export type GetTelemetryLazyQueryHookResult = ReturnType<typeof useGetTelemetryLazyQuery>;
 export type GetTelemetryQueryResult = Apollo.QueryResult<GetTelemetryQuery, GetTelemetryQueryVariables>;
 export const GetContactsDocument = gql`
-    query GetContacts {
-  getContacts {
+    query GetContacts($filter: ContactFilter) {
+  getContacts(filter: $filter) {
     _id
     name
     phone
@@ -510,6 +512,7 @@ export const GetContactsDocument = gql`
  * @example
  * const { data, loading, error } = useGetContactsQuery({
  *   variables: {
+ *      filter: // value for 'filter'
  *   },
  * });
  */

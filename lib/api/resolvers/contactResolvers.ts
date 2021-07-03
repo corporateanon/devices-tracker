@@ -13,10 +13,14 @@ export const contactResolvers: Resolvers<ApplicationContext> = {
             return contact;
         },
 
-        async getContacts(_, { filter }) {
-            const query: FilterQuery<IContact> = {
-                archived: Boolean(filter.archived),
-            };
+        async getContacts(_, { filter = {} }) {
+            const query: FilterQuery<IContact> = filter.archived
+                ? {
+                      archived: true,
+                  }
+                : {
+                      archived: { $ne: true },
+                  };
             const contacts = await Contact.find(query).lean();
             return contacts;
         },

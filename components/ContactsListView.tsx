@@ -18,6 +18,8 @@ import {
     useGetContactsQuery,
     useSaveContactMutation,
 } from '../lib/generated/graphql';
+import { ContactToolbar } from './ContactToolbar';
+import { queryToContactFilters } from './filters/contactFilters';
 
 const columns: readonly Column<Contact>[] = [
     {
@@ -52,7 +54,11 @@ const useStyles = makeStyles({
 
 export function ContactsListView() {
     const classes = useStyles();
+    const { query } = useRouter();
     const { error, data, loading } = useGetContactsQuery({
+        variables: {
+            filter: queryToContactFilters(query),
+        },
         ssr: false,
     });
 
@@ -96,6 +102,9 @@ export function ContactsListView() {
 
     return (
         <Grid container direction="column" className={classes.root}>
+            <Grid item>
+                <ContactToolbar />
+            </Grid>
             <Grid item className={classes.gridWrapper}>
                 <ReactDataGrid
                     onRowsChange={handleRowsChange}

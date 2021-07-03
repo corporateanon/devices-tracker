@@ -6,7 +6,7 @@ import { TelemetryFilter } from '../lib/generated/graphql';
 import { telemetryFiltersToQuery, queryToTelemetryFilters } from './filters/telemetryFilters';
 import { TelemetryFilterView } from './TelemetryFilterView';
 
-export const NavigationPane: FC = () => {
+export const TelemetryToolbar: FC = () => {
     const { query, replace } = useRouter();
     const filters = queryToTelemetryFilters(query);
     const handleFiltersChange = useCallback(

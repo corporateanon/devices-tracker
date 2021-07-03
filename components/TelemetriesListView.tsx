@@ -15,7 +15,7 @@ import { Telemetry, useGetTelemetriesQuery } from '../lib/generated/graphql';
 import { isBatteryLow, isLevelHigh, isOffline } from '../lib/telemetryUtils';
 import { queryToTelemetryFilters } from './filters/telemetryFilters';
 import classes from './ListView.module.css';
-import { NavigationPane } from './NavigationPane';
+import { TelemetryToolbar } from './TelemetryToolbar';
 
 const columns: readonly Column<Telemetry>[] = [
     {
@@ -92,7 +92,7 @@ export function TelemetriesListView() {
     return (
         <Grid container direction="column" className={classes.root} spacing={2}>
             <Grid item>
-                <NavigationPane />
+                <TelemetryToolbar />
             </Grid>
             <Grid item className={classes.gridWrapper}>
                 <ReactDataGrid
